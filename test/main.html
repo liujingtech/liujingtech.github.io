@@ -38,7 +38,9 @@
         var jinbi = 0;
         var yinbi = 0;
         var lv_2_to_5_tank = "";
+        let lv_2_to_5_tank_had_car = new Set();
         var lv_8_tank = "";
+        let lv_8_tank_had_car = new Set();
 
         function random(arr1, arr2) {
             var sum = 0,
@@ -57,7 +59,6 @@
             return null;
         };
         function gen50() {
-            console.log("aa");
             for (i = 0; i < 50; i++) {
                 gen();
             }
@@ -103,13 +104,15 @@
                 "122 TM",
                 "斯柯达 T56"];
             b = [0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.02332, 0.02332, 0.02332, 0.02332, 0.02332, 0.0048, 0.0048, 0.0048, 0.0048, 0.0048];
-
+            c= [0,0,0,0,0,0,0,0,500,850,1200,1500,1500,9650,9450,9500,8450,10550]
             result_str = "";
             vipDay = 0;
             jinbi = 0;
             yinbi = 0;
             lv_2_to_5_tank = "";
+            lv_2_to_5_tank_had_car = new Set();
             lv_8_tank = "";
+            lv_8_tank_had_car = new Set();
 
             document.getElementById("demo").innerHTML = "";
         }
@@ -117,7 +120,6 @@
         function gen() {
             count += 1;
             var result = random(a, b);
-            console.log(result);
 
             result_str += result.name + " ";
 
@@ -132,15 +134,25 @@
                 yinbi += position == 6 ? 10000 : 500000;
             }
             if (position >= 8 && position < 13) {
-                a.splice(position, 1);
-                b.splice(position, 1);
-                lv_2_to_5_tank += result.name + ",";
+                if(lv_2_to_5_tank_had_car.has(position)){//已经抽到过
+                    lv_2_to_5_tank += result.name + "(转换成"+ c[position] +"金币),";
+                    jinbi+= c[position];
+                }else{
+                    lv_2_to_5_tank += "<font color=red>"+result.name + "</font>,";
+                    lv_2_to_5_tank_had_car.add(position);
+                }
+                console.log(lv_2_to_5_tank_had_car);
                 lv_2_to_5_tank.substring(0, lv_2_to_5_tank.length - 1);
             }
             if (position >= 13) {
-                a.splice(position, 1);
-                b.splice(position, 1);
-                lv_8_tank += result.name + ",";
+                if(lv_8_tank_had_car.has(position)){
+                    lv_8_tank += result.name + "(转换成"+ c[position] +"金币),";
+                    jinbi+= c[position];
+                }else{
+                    lv_8_tank += "<font color=red>"+result.name + "</font>,";
+                    lv_8_tank_had_car.add(position);
+                }
+                console.log(lv_8_tank_had_car)
                 lv_8_tank.substring(0, lv_8_tank.length - 1);
             }
         }
