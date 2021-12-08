@@ -35,9 +35,18 @@
             "M-IV-Y",
             "122 TM",
             "斯柯达 T56"];
-        var b = [0.107425, 0.107425, 0.107425, 0.107425, 0.107425, 0.107425, 0.107425, 0.107425, 0.02332, 0.02332, 0.02332, 0.02332, 0.02332, 0.0048, 0.0048, 0.0048, 0.0048, 0.0048];
-        var bb = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0048, 0.0048, 0.0048, 0.0048, 0.0048];
-        var c = [0, 0, 0, 0, 0, 0, 0, 0, 500, 850, 1200, 1500, 1500, 9650, 9450, 9500, 8450, 10550];
+        var b = [
+            0.107425, 0.107425, 0.107425, 0.107425, 0.107425, 0.107425, 0.107425, 0.107425,
+            0.02332, 0.02332, 0.02332, 0.02332, 0.02332,
+            0.0048, 0.0048, 0.0048, 0.0048, 0.0048];
+        var bb = [
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0.2, 0.2, 0.2, 0.2, 0.2];
+        var c = [
+            0, 0, 0, 0, 0, 0, 0, 0,
+            500, 850, 1200, 1500, 1500,
+            9650, 9450, 9500, 8450, 10550];
 
         var result_str = "";
         var vipDay = 0;
@@ -52,11 +61,15 @@
             var sum = 0,
                 factor = 0,
                 random = Math.random();
-            console.log("random:" + random);
+
 
             for (var i = arr2.length - 1; i >= 0; i--) {
                 sum += arr2[i]; // 统计概率总和
             };
+            if (sum != 1) {//测试用,不为1就出错了
+                console.log("sum:" + sum + " random:" + random);
+            }
+            console.log(a.length + " b:" + b.length + " bb:" + bb.length + " c:" + c.length);
             random *= sum; // 生成概率随机数
             for (var i = arr2.length - 1; i >= 0; i--) {
                 factor += arr2[i];
@@ -80,7 +93,6 @@
             }
             genText();
         }
-        fun
         function gen25() {
             jinbi += 6250;
             vipDay += 25;
@@ -121,14 +133,21 @@
             console.log(baodi_count);
             if (baodi_count == 50) {
                 baodi_count_sum++;
+
                 result = random(a, bb)
-                console.log(baodi_count + " " + result.name + " " + result.position);
+                if (result != null) {
+                    console.log(baodi_count + " " + result.name + " " + result.position);
+                } else {
+                    return;
+                }
             } else {
                 result = random(a, b);
             }
             result_str += result.name + " ";
 
-            calc(result);
+            if (result != null) {
+                calc(result);
+            }
         }
         function calc(result) {
             var position = result.position
@@ -146,13 +165,15 @@
                     if (lv_2_to_5_tank_had_car.size < 5) {
                         result = random(a, [
                             0, 0, 0, 0, 0, 0, 0, 0,
-                            lv_8_tank_had_car.has(8) ? 0 : 0.02332,
-                            lv_8_tank_had_car.has(9) ? 0 : 0.02332,
-                            lv_8_tank_had_car.has(10) ? 0 : 0.02332,
-                            lv_8_tank_had_car.has(11) ? 0 : 0.02332,
-                            lv_8_tank_had_car.has(12) ? 0 : 0.02332,
+                            lv_2_to_5_tank_had_car.has(8) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
+                            lv_2_to_5_tank_had_car.has(9) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
+                            lv_2_to_5_tank_had_car.has(10) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
+                            lv_2_to_5_tank_had_car.has(11) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
+                            lv_2_to_5_tank_had_car.has(12) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
                             0, 0, 0, 0, 0]);
-                        calc(result);
+                        if (result != null) {
+                            calc(result);
+                        }
                         return;
                     }
                     lv_2_to_5_tank += result.name + "(转换成" + c[position] + "金币),";
@@ -168,12 +189,15 @@
                 if (lv_8_tank_had_car.has(position)) {//已经抽到过
                     if (lv_8_tank_had_car.size < 5) {
                         result = random(a, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                            lv_8_tank_had_car.has(13) ? 0 : 0.0048,
-                            lv_8_tank_had_car.has(14) ? 0 : 0.0048,
-                            lv_8_tank_had_car.has(15) ? 0 : 0.0048,
-                            lv_8_tank_had_car.has(16) ? 0 : 0.0048,
-                            lv_8_tank_had_car.has(17) ? 0 : 0.0048]);
-                        calc(result);
+                            lv_8_tank_had_car.has(13) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
+                            lv_8_tank_had_car.has(14) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
+                            lv_8_tank_had_car.has(15) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
+                            lv_8_tank_had_car.has(16) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
+                            lv_8_tank_had_car.has(17) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
+                        ]);
+                        if (result != null) {
+                            calc(result);
+                        }
                         return;
                     }
                     lv_8_tank += result.name + "(转换成" + c[position] + "金币),";
@@ -187,7 +211,6 @@
                 baodi_count = 0;
             }
         }
-        init();
     </script>
 </body>
 
