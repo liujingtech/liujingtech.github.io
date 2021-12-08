@@ -1,94 +1,150 @@
 <!DOCTYPE html>
 <html>
+
 <body>
 
-<h2>My Heading</h2>
+    <h2>给白毛子的概率点根香</h2>
 
-<p id="demo"></p>
+    <button onclick="gen50()">再来50次</button>
+    <button onclick="gen1()">再来1次</button>
+    <button onclick="init()">重来</button>
 
-<script>
-function random(arr1, arr2) {
-    var sum = 0,
-        factor = 0,
-        random = Math.random();
 
-    for(var i = arr2.length - 1; i >= 0; i--) {
-        sum += arr2[i]; // 统计概率总和
-    };
-    random *= sum; // 生成概率随机数
-    for(var i = arr2.length - 1; i >= 0; i--) {
-        factor += arr2[i];
-        if(random <= factor) 
-          return {name:arr1[i],position:i};
-    };
-    return null;
-};
+    <p id="demo"></p>
+    <script>
+        var count = 0;//抽取次数
+        var a = ["1天坦克世界高级账号",
+            "3天坦克世界高级账号",
+            "7天坦克世界高级账号",
+            "250金币",
+            "500金币",
+            "1000金币",
+            "100000银币",
+            "500000银币",
+            "35R",
+            "M15",
+            "玛蒂尔达LVT",
+            "M4-85",
+            "KV-1加强型",
+            "博福斯TRV",
+            "卡利班",
+            "M-IV-Y",
+            "122 TM",
+            "斯柯达 T56"];
+        var b = [0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.02332, 0.02332, 0.02332, 0.02332, 0.02332, 0.0048, 0.0048, 0.0048, 0.0048, 0.0048];
 
-// test
-var a = ["1天坦克世界高级账号",
-"3天坦克世界高级账号",
-"7天坦克世界高级账号",
-"250金币",
-"500金币",
-"1000金币",
-"100000银币",
-"500000银币",
-"35R",
-"M15",
-"玛蒂尔达LVT",
-"M4-85",
-"KV-1加强型",
-"博福斯TRV",
-"卡利班",
-"M-IV-Y",
-"122 TM",
-"斯柯达 T56"];
-var b = [0.8594, 0.8594, 0.8594, 0.8594,0.8594,0.8594,0.8594,0.8594, 0.02332,0.02332,0.02332,0.02332,0.02332,0.0048,0.0048,0.0048,0.0048,0.0048];
+        var result_str = "";
+        var vipDay = 0;
+        var jinbi = 0;
+        var yinbi = 0;
+        var lv_2_to_5_tank = "";
+        var lv_8_tank = "";
 
-var result_str="";
-var vipDay = 0;
-var jinbi = 0;
-var yinbi = 0;
-var lv_2_to_5_tank = "";
-var lv_8_tank = "";
-for(i=0;i<50;i++){
-    var result = random(a,b);
-    console.log(result);
+        function random(arr1, arr2) {
+            var sum = 0,
+                factor = 0,
+                random = Math.random();
 
-    result_str += result.name+" ";
-    
-    var position = result.position
-    if(position<3){
-        vipDay+=position==0?1:position==1?3:7;
-    }
-    if(position>=3&&position<6){
-        jinbi+=position==3?250:position==4?500:100;
-    }
-    if(position>=6&&position<8){
-        yinbi+=position==6?10000:500000;
-    }
-    if(position>=8&&position<13){
-        a.splice(position,1);
-        b.splice(position,1);
-        lv_2_to_5_tank += result.name+",";
-        lv_2_to_5_tank.substring(0,lv_2_to_5_tank.length - 1);
-    }
-    if(position>=13){
-        a.splice(position,1);
-        b.splice(position,1);
-        lv_8_tank+= result.name+",";
-        lv_8_tank.substring(0,lv_8_tank.length-1);
-    }
+            for (var i = arr2.length - 1; i >= 0; i--) {
+                sum += arr2[i]; // 统计概率总和
+            };
+            random *= sum; // 生成概率随机数
+            for (var i = arr2.length - 1; i >= 0; i--) {
+                factor += arr2[i];
+                if (random <= factor)
+                    return { name: arr1[i], position: i };
+            };
+            return null;
+        };
+        function gen50() {
+            console.log("aa");
+            for (i = 0; i < 50; i++) {
+                gen();
+            }
+            document.getElementById("demo").innerHTML = "<\p> 总抽取次数：" + count
+                + "<\p> 总vip天数：" + vipDay
+                + "<\p> 总金币：" + jinbi
+                + "<\p> 总银币：" + yinbi
+                + "<\p> II–V级坦克：" + lv_2_to_5_tank
+                + "<\p> VIII级坦克：" + lv_8_tank
+                + "<\p> 明细：" + result_str
+                ;
+        }
+        function gen1() {
+            gen();
+            document.getElementById("demo").innerHTML = "<\p> 总抽取次数：" + count
+                + "<\p> 总vip天数：" + vipDay
+                + "<\p> 总金币：" + jinbi
+                + "<\p> 总银币：" + yinbi
+                + "<\p> II–V级坦克：" + lv_2_to_5_tank
+                + "<\p> VIII级坦克：" + lv_8_tank
+                + "<\p> 明细：" + result_str
+                ;
+        }
+        function init() {
+            // test
+            a = ["1天坦克世界高级账号",
+                "3天坦克世界高级账号",
+                "7天坦克世界高级账号",
+                "250金币",
+                "500金币",
+                "1000金币",
+                "100000银币",
+                "500000银币",
+                "35R",
+                "M15",
+                "玛蒂尔达LVT",
+                "M4-85",
+                "KV-1加强型",
+                "博福斯TRV",
+                "卡利班",
+                "M-IV-Y",
+                "122 TM",
+                "斯柯达 T56"];
+            b = [0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.02332, 0.02332, 0.02332, 0.02332, 0.02332, 0.0048, 0.0048, 0.0048, 0.0048, 0.0048];
 
-}
-document.getElementById("demo").innerHTML = result_str
-    +"<\p> 总vip天数："+vipDay
-    +"<\p> 总金币："+jinbi
-    +"<\p> 总银币："+yinbi
-    +"<\p> II–V级坦克："+lv_2_to_5_tank
-    +"<\p> VIII级坦克："+lv_8_tank
-;
-</script>
+            result_str = "";
+            vipDay = 0;
+            jinbi = 0;
+            yinbi = 0;
+            lv_2_to_5_tank = "";
+            lv_8_tank = "";
 
+            document.getElementById("demo").innerHTML = "";
+        }
+
+        function gen() {
+            count += 1;
+            var result = random(a, b);
+            console.log(result);
+
+            result_str += result.name + " ";
+
+            var position = result.position
+            if (position < 3) {
+                vipDay += position == 0 ? 1 : position == 1 ? 3 : 7;
+            }
+            if (position >= 3 && position < 6) {
+                jinbi += position == 3 ? 250 : position == 4 ? 500 : 100;
+            }
+            if (position >= 6 && position < 8) {
+                yinbi += position == 6 ? 10000 : 500000;
+            }
+            if (position >= 8 && position < 13) {
+                a.splice(position, 1);
+                b.splice(position, 1);
+                lv_2_to_5_tank += result.name + ",";
+                lv_2_to_5_tank.substring(0, lv_2_to_5_tank.length - 1);
+            }
+            if (position >= 13) {
+                a.splice(position, 1);
+                b.splice(position, 1);
+                lv_8_tank += result.name + ",";
+                lv_8_tank.substring(0, lv_8_tank.length - 1);
+            }
+        }
+        init();
+    </script>
 </body>
+
 </html>
