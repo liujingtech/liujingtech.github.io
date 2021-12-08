@@ -13,6 +13,8 @@
     <p id="demo"></p>
     <script>
         var count = 0;//抽取次数
+        var baodi_count = 0;//抽了多少没有8金
+        var baodi_count_sum = 0;
         var a = ["1天坦克世界高级账号",
             "3天坦克世界高级账号",
             "7天坦克世界高级账号",
@@ -46,6 +48,7 @@
             var sum = 0,
                 factor = 0,
                 random = Math.random();
+            console.log("random:" + random);
 
             for (var i = arr2.length - 1; i >= 0; i--) {
                 sum += arr2[i]; // 统计概率总和
@@ -63,6 +66,8 @@
                 gen();
             }
             document.getElementById("demo").innerHTML = "<\p> 总抽取次数：" + count
+                + "<\p> 距离下一次保底：" + (50 - baodi_count)
+                + "<\p> 总吃过保底的次数：" + (baodi_count_sum)
                 + "<\p> 总vip天数：" + vipDay
                 + "<\p> 总金币：" + jinbi
                 + "<\p> 总银币：" + yinbi
@@ -74,6 +79,8 @@
         function gen1() {
             gen();
             document.getElementById("demo").innerHTML = "<\p> 总抽取次数：" + count
+                + "<\p> 距离下一次保底：" + (50 - baodi_count)
+                + "<\p> 总吃过保底的次数：" + (baodi_count_sum)
                 + "<\p> 总vip天数：" + vipDay
                 + "<\p> 总金币：" + jinbi
                 + "<\p> 总银币：" + yinbi
@@ -85,6 +92,7 @@
         function init() {
             // test
             count = 0;//抽取次数
+            baodi_count = 0;
             a = ["1天坦克世界高级账号",
                 "3天坦克世界高级账号",
                 "7天坦克世界高级账号",
@@ -104,7 +112,10 @@
                 "122 TM",
                 "斯柯达 T56"];
             b = [0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.02332, 0.02332, 0.02332, 0.02332, 0.02332, 0.0048, 0.0048, 0.0048, 0.0048, 0.0048];
-            c= [0,0,0,0,0,0,0,0,500,850,1200,1500,1500,9650,9450,9500,8450,10550]
+            c = [0, 0, 0, 0, 0, 0, 0, 0, 500, 850, 1200, 1500, 1500, 9650, 9450, 9500, 8450, 10550]
+
+            bb = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0048, 0.0048, 0.0048, 0.0048, 0.0048];
+
             result_str = "";
             vipDay = 0;
             jinbi = 0;
@@ -119,8 +130,17 @@
 
         function gen() {
             count += 1;
-            var result = random(a, b);
+            baodi_count += 1;//每次都加一，8金抽到就归零
+            var result;
 
+            console.log(baodi_count);
+            if (baodi_count == 50) {
+                baodi_count_sum++;
+                result = random(a, bb)
+                console.log(baodi_count + " " + result.name + " " + result.position);
+            } else {
+                result = random(a, b);
+            }
             result_str += result.name + " ";
 
             var position = result.position
@@ -134,26 +154,27 @@
                 yinbi += position == 6 ? 10000 : 500000;
             }
             if (position >= 8 && position < 13) {
-                if(lv_2_to_5_tank_had_car.has(position)){//已经抽到过
-                    lv_2_to_5_tank += result.name + "(转换成"+ c[position] +"金币),";
-                    jinbi+= c[position];
-                }else{
-                    lv_2_to_5_tank += "<font color=red>"+result.name + "</font>,";
+                if (lv_2_to_5_tank_had_car.has(position)) {//已经抽到过
+                    lv_2_to_5_tank += result.name + "(转换成" + c[position] + "金币),";
+                    jinbi += c[position];
+                } else {
+                    lv_2_to_5_tank += "<font color=red>" + result.name + "</font>,";
                     lv_2_to_5_tank_had_car.add(position);
                 }
-                console.log(lv_2_to_5_tank_had_car);
+                // console.log(lv_2_to_5_tank_had_car);
                 lv_2_to_5_tank.substring(0, lv_2_to_5_tank.length - 1);
             }
             if (position >= 13) {
-                if(lv_8_tank_had_car.has(position)){
-                    lv_8_tank += result.name + "(转换成"+ c[position] +"金币),";
-                    jinbi+= c[position];
-                }else{
-                    lv_8_tank += "<font color=red>"+result.name + "</font>,";
+                if (lv_8_tank_had_car.has(position)) {
+                    lv_8_tank += result.name + "(转换成" + c[position] + "金币),";
+                    jinbi += c[position];
+                } else {
+                    lv_8_tank += "<font color=red>" + result.name + "</font>,";
                     lv_8_tank_had_car.add(position);
                 }
-                console.log(lv_8_tank_had_car)
+                // console.log(lv_8_tank_had_car)
                 lv_8_tank.substring(0, lv_8_tank.length - 1);
+                baodi_count = 0;
             }
         }
         init();
