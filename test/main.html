@@ -13,7 +13,7 @@
 </head>
 <body>
 
-    <h2>给白毛子的概率点根香</h2>
+    <h2>图一乐，别太当真</h2>
     </br>
     <button onclick="gen1()">再来1次</button>
     <button onclick="gen11()">再来11次</button>
@@ -25,7 +25,11 @@
 
     <p id="demo"></p>
     <font size=1 color=grey id="lastMod">当前文件最后更新时间</font>
+    <h4>算法大概实现逻辑</h5>
 
+    根据活动页面可知：箱子种类有对应的vip天数和金币数。同时，100%获得一个装饰品，vip、银币、金币（掉落率：85.94%）/2-5级车（掉落率：11.66%）/8级车（掉落率：2.4%）中3选一（3种概率加一起100%），5%概率的皮肤（独立计算）。并且，在新车没有全获得的情况下，优先获得新车。之后，重复获得的车转换成金币。
+    
+        
     <script>
 
         document.getElementById("lastMod").innerHTML = "最后修改时间：" + document.lastModified;
@@ -179,7 +183,6 @@
                 yinbi += position == 6 ? 10000 : 500000;
             }
             if (position >= 8 && position < 13) {
-                car_lv2_5_count++;
                 if (lv_2_to_5_tank_had_car.has(position)) {//已经抽到过
                     if (lv_2_to_5_tank_had_car.size < 5) {
                         result = random(a, [
@@ -197,15 +200,16 @@
                     }
                     lv_2_to_5_tank += result.name + "(转换成" + c[position] + "金币),";
                     jinbi += c[position];
+                    car_lv2_5_count++;
                 } else {
                     lv_2_to_5_tank += "<font color=red>" + result.name + "</font>,";
                     lv_2_to_5_tank_had_car.add(position);
+                    car_lv2_5_count++;
                 }
                 // console.log(lv_2_to_5_tank_had_car);
                 lv_2_to_5_tank.substring(0, lv_2_to_5_tank.length - 1);
             }
             if (position >= 13) {//8级车
-                car_lv8_count++;
                 if (lv_8_tank_had_car.has(position)) {//已经抽到过
                     if (lv_8_tank_had_car.size < 5) {
                         result = random(a, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -222,9 +226,11 @@
                     }
                     lv_8_tank += result.name + "(转换成" + c[position] + "金币),";
                     jinbi += c[position];
+                    car_lv8_count++;
                 } else {
                     lv_8_tank += "<font color=red>" + result.name + "</font>,";
                     lv_8_tank_had_car.add(position);
+                    car_lv8_count++;
                 }
                 // console.log(lv_8_tank_had_car)
                 lv_8_tank.substring(0, lv_8_tank.length - 1);
