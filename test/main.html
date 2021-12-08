@@ -27,13 +27,15 @@
     <font size=1 color=grey id="lastMod">当前文件最后更新时间</font>
     <h4>算法大概实现逻辑</h5>
 
-    根据活动页面可知：箱子种类有对应的vip天数和金币数。同时，100%获得一个装饰品，vip、银币、金币（掉落率：85.94%）/2-5级车（掉落率：11.66%）/8级车（掉落率：2.4%）中3选一（3种概率加一起100%），5%概率的皮肤（独立计算）。并且，在新车没有全获得的情况下，优先获得新车。之后，重复获得的车转换成金币。
+    根据活动页面可知：箱子种类有对应的vip天数和金币数。同时，100%获得一个装饰品（独立获得），vip、银币、金币（掉落率：85.94%）/2-5级车（掉落率：11.66%）/8级车（掉落率：2.4%）中3选一（3种概率加一起100%），5%概率的皮肤（独立获得）。并且，在新车没有全获得的情况下，优先获得新车。之后，重复获得的车转换成金币。
+    </br>
     
         
     <script>
 
         document.getElementById("lastMod").innerHTML = "最后修改时间：" + document.lastModified;
 
+        var rmb=0;
         var count = 0;//抽取次数
         var baodi_count = 0;//抽了多少没有8金
         var car_lv2_5_count = 0;
@@ -102,12 +104,14 @@
         };
 
         function gen1() {
+            rmb+=38;
             jinbi += 750;
             vipDay += 3;
             gen();
             genText();
         }
         function gen11() {
+            rmb+=125;
             jinbi += 2750;
             vipDay += 11;
             for (i = 0; i < 11; i++) {
@@ -116,6 +120,7 @@
             genText();
         }
         function gen25() {
+            rmb+=250;
             jinbi += 6250;
             vipDay += 25;
             for (i = 0; i < 25; i++) {
@@ -124,6 +129,7 @@
             genText();
         }
         function gen75() {
+            rmb+=625;
             jinbi += 18750;
             vipDay += 75;
             for (i = 0; i < 75; i++) {
@@ -133,6 +139,7 @@
         }
         function genText() {
             document.getElementById("demo").innerHTML = "<\p> 总抽取次数：" + count
+                + "<\p> 总花费rmb：" + "<b>"+rmb+"</b>"
                 + "<\p> 距离下一次保底：" + (50 - baodi_count)
                 + "<\p> 总吃过保底的次数：" + (baodi_count_sum)
                 + "<\p> 总vip天数：" + vipDay
