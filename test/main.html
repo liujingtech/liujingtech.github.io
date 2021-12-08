@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html>
-
+<head>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?c604f4f438128bdc8ff70d5f1a075261";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+</head>
 <body>
 
     <h2>给白毛子的概率点根香</h2>
-
+    </br>
     <button onclick="gen1()">再来1次</button>
     <button onclick="gen11()">再来11次</button>
     <button onclick="gen25()">再来25次</button>
@@ -12,10 +22,18 @@
     <button onclick="init()">重来</button>
 
 
+
     <p id="demo"></p>
+    <font size=1 color=grey id="lastMod">当前文件最后更新时间</font>
+
     <script>
+
+        document.getElementById("lastMod").innerHTML = "最后修改时间：" + document.lastModified;
+
         var count = 0;//抽取次数
         var baodi_count = 0;//抽了多少没有8金
+        var car_lv2_5_count = 0;
+        var car_lv8_count = 0;
         var baodi_count_sum = 0;
         var a = ["1天坦克世界高级账号",
             "3天坦克世界高级账号",
@@ -116,8 +134,8 @@
                 + "<\p> 总vip天数：" + vipDay
                 + "<\p> 总金币：" + jinbi
                 + "<\p> 总银币：" + yinbi
-                + "<\p> II–V级坦克：" + lv_2_to_5_tank
-                + "<\p> VIII级坦克：" + lv_8_tank
+                + "<\p> II–V级坦克（" + car_lv2_5_count + "台）：" + lv_2_to_5_tank
+                + "<\p> VIII级坦克（" + car_lv8_count + "台）：" + lv_8_tank
                 + "<\p> 明细：" + result_str
                 ;
         }
@@ -161,6 +179,7 @@
                 yinbi += position == 6 ? 10000 : 500000;
             }
             if (position >= 8 && position < 13) {
+                car_lv2_5_count++;
                 if (lv_2_to_5_tank_had_car.has(position)) {//已经抽到过
                     if (lv_2_to_5_tank_had_car.size < 5) {
                         result = random(a, [
@@ -186,6 +205,7 @@
                 lv_2_to_5_tank.substring(0, lv_2_to_5_tank.length - 1);
             }
             if (position >= 13) {//8级车
+                car_lv8_count++;
                 if (lv_8_tank_had_car.has(position)) {//已经抽到过
                     if (lv_8_tank_had_car.size < 5) {
                         result = random(a, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -212,6 +232,7 @@
             }
         }
     </script>
+
 </body>
 
 </html>
