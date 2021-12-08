@@ -15,51 +15,33 @@
 
 <body>
 
-    <h2>图一乐，别太当真</h2>
+    <h2>Just for fun</h2>
     </br>
-    <button onclick="gen3()">再来3次</button>
-    <button onclick="gen11()">再来11次</button>
-    <button onclick="gen25()">再来25次</button>
-    <button onclick="gen75()">再来75次</button>
-    <button onclick="init()">重来</button>
+    <button onclick="gen3()">Get 3 box</button>
+    <button onclick="gen11()">Get 11 box</button>
+    <button onclick="gen25()">Get 25 box</button>
+    <button onclick="gen75()">Get 75 box</button>
+    <button onclick="init()">refresh</button>
 
 
 
     <p id="demo"></p>
-    <font size=1 color=grey id="lastMod">当前文件最后更新时间</font>
+    <font size=1 color=grey id="lastMod"></font>
     </p>
-    <details>
-        <summary>大致实现逻辑</summary>
-        箱子种类有对应的vip天数和金币数。同时，100%获得一个装饰品（独立获得），vip、银币、金币（掉落率：85.94%）/2-5级车（掉落率：11.66%）/8级车（掉落率：2.4%）中3选一（3种概率加一起100%），5%概率的皮肤（独立获得）。并且，在新车没有全获得的情况下，优先获得新车。之后，重复获得的车转换成金币。
-        </p>
-        分别把具体的金银币vip的单项给平均分配到85.94%内，依照如此分配2-5级车和8级车，并将概率连续相加，获得命中区间。
-        </br>
-        比如，获得250/500/1000金币的概率都是0.107425，那么获得区间0-0.107425,0.107425-0.21485,0.21485-0.322275。每次抽取时获取1个随机数，和上面的区间进行匹配，如果在区间内，那么命中该物品并进行统计。
-        </p>
-        获取车的方式稍微复杂一些，除了命中0.8594-0.9760（2-5级），0.9760-1（8金）以外，需要判断是否已拥有此车，并且判断同类型（2-5级一个类型，8级一个类型）新车是否全部获取。如果没有全部获取，那么从剩下的车里面平均分配区间，并再次生成随机数，进行区间匹配。如果已经全部获取，那么直接计算匹配到的车的金币价格，并加入统计。
-        </p>
-    </details>
-    <details>
-        <summary>友情提示</summary>
-        如果你保底数低于25抽，可以考虑是否加25抽箱子。因为，吃保底最差的金币车收益是8450金币（8450/40=211.25元）。25抽的箱子自带2750金币，同时算上最差的保底车的金币价值8450，再除以40，是280rmb。已知，25抽250块钱，所以如果25抽最差预期是赚30rmb（不过我用的比例1:40是日常金币价格，肯定不如节日期间的价格比例）
-    </details>
-    <details>
-        <summary>另一个友情提示</summary>虚拟道具始终都是存在数据库里的数据而已，算来算去这世界只有马化腾亏了。<b>游戏只是为了娱乐，大家要好好吃饭。</b>水母 爱心 水母
-    </details>
     <script>
 
-        document.getElementById("lastMod").innerHTML = "最后修改时间：" + document.lastModified;
+        document.getElementById("lastMod").innerHTML = "last modify time:" + document.lastModified;
 
-        var rmb = 0;
+        var usd = 0;
         var count = 0;//抽取次数
         var baodi_count = 0;//抽了多少没有8金
         var car_lv2_5_count = 0;
         var car_lv8_count = 0;
         var baodi_count_sum = 0;
         var a = [
-            "1天坦克世界高级账号", "3天坦克世界高级账号", "7天坦克世界高级账号", "250金币", "500金币", "1000金币", "100000银币", "500000银币",
-            "35R", "M15", "玛蒂尔达LVT", "M4-85", "KV-1加强型",
-            "博福斯TRV", "卡利班", "M-IV-Y", "122 TM", "斯柯达 T56"
+            "1 day of WoT Premium Account", "3 days of WoT Premium Account", "7 days of WoT Premium Account", "250 gold", "500 gold", "1000 gold", "100,000 credits", "500,000 credits",
+            "Pz.Kpfw. 35 R", "Pz.Kpfw. M15", "Matilda LVT", "M4-85", "KV-1 Shielded",
+            "Bofors Tornvagn", "Caliban", "M-IV-Y", "122 TM", "Škoda T 56"
         ];
         var b = [
             0.107425, 0.107425, 0.107425, 0.107425, 0.107425, 0.107425, 0.107425, 0.107425,
@@ -110,40 +92,36 @@
         };
 
         function gen3() {
-            rmb += 38;
+            usd += 5;
             jinbi += 750;
             xiangzi_jinbi += 750;
-            vipDay += 3;
             for (i = 0; i < 3; i++) {
                 gen();
             }
             genText();
         }
         function gen11() {
-            rmb += 125;
+            usd += 20;
             jinbi += 2750;
             xiangzi_jinbi += 2750;
-            vipDay += 11;
             for (i = 0; i < 11; i++) {
                 gen();
             }
             genText();
         }
         function gen25() {
-            rmb += 250;
+            usd += 40;
             jinbi += 6250;
             xiangzi_jinbi += 6250;
-            vipDay += 25;
             for (i = 0; i < 25; i++) {
                 gen();
             }
             genText();
         }
         function gen75() {
-            rmb += 625;
+            usd += 100;
             jinbi += 18750;
             xiangzi_jinbi += 18750;
-            vipDay += 75;
             for (i = 0; i < 75; i++) {
                 gen();
             }
@@ -151,16 +129,16 @@
         }
         function genText() {
             var last_baodi = 50 - baodi_count;
-            document.getElementById("demo").innerHTML = "<\p> 总抽取次数：" + count
-                + "<\p> 总花费rmb：" + "<b>" + rmb + "</b>"
-                + "<\p> 距离下一次保底：" + last_baodi
-                + "<\p> 总吃过保底的次数：" + (baodi_count_sum)
-                + "<\p> 总vip天数：" + vipDay + "天 = 自带" + xiangzi_vip + "天 + 开箱" + jiangli_vip + "天"
-                + "<\p> 总金币：" + jinbi + " = 自带" + xiangzi_jinbi + "金币 + 开箱" + jiangli_jinbi + "金币"
-                + "<\p> 总银币：" + yinbi + " = 自带" + xiangzi_yinbi + "银币 + 开箱" + jiangli_yinbi + "银币"
-                + "<\p> II–V级坦克（抽到" + car_lv2_5_count + "台，期望出货" + count * 0.1166 + "台）：" + lv_2_to_5_tank
-                + "<\p> VIII级坦克（抽到" + car_lv8_count + "台,期望出货" + count * 0.024 + "台）：" + lv_8_tank
-                + "<\p> <details><summary>明细</summary>" + result_str + "</details>"
+            document.getElementById("demo").innerHTML = "<\p> opening box:" + count
+                + "<\p> cost:" + "<b>" + usd + "usd</b>"
+                + "<\p> next guaranteed:" + last_baodi
+                + "<\p> guaranteed count:" + (baodi_count_sum)
+                + "<\p> vip:" + vipDay + " days"
+                + "<\p> gold:" + jinbi + " = " + xiangzi_jinbi + " gold from box + " + jiangli_jinbi + " gold from opening"
+                + "<\p> credits:" + yinbi
+                + "<\p> II–V VEHICLE(Got:" + car_lv2_5_count + ",expect:" + count * 0.1166 + "):" + lv_2_to_5_tank
+                + "<\p> VIII VEHICLE(Got:" + car_lv8_count + ",expect:" + count * 0.024 + "):" + lv_8_tank
+                + "<\p> <details><summary>details</summary>" + result_str + "</details>"
                 ;
         }
         function init() {
@@ -221,7 +199,7 @@
                         }
                         return;
                     }
-                    lv_2_to_5_tank += result.name + "(+" + c[position] + "金币),";
+                    lv_2_to_5_tank += result.name + "(+" + c[position] + "gold),";
                     jinbi += c[position];
                     jiangli_jinbi += c[position];
                     car_lv2_5_count++;
@@ -248,7 +226,7 @@
                         }
                         return;
                     }
-                    lv_8_tank += result.name + "(+" + c[position] + "金币),";
+                    lv_8_tank += result.name + "(+" + c[position] + "gold),";
                     jinbi += c[position];
                     jiangli_jinbi += c[position];
                     car_lv8_count++;
