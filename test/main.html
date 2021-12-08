@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <script>
         var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?c604f4f438128bdc8ff70d5f1a075261";
-          var s = document.getElementsByTagName("script")[0]; 
-          s.parentNode.insertBefore(hm, s);
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?c604f4f438128bdc8ff70d5f1a075261";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
         })();
-        </script> 
+    </script>
 </head>
+
 <body>
 
     <h2>图一乐，别太当真</h2>
@@ -25,19 +27,22 @@
 
     <p id="demo"></p>
     <font size=1 color=grey id="lastMod">当前文件最后更新时间</font>
-    <h4>算法大概实现逻辑</h5>
-
-    根据活动页面可知：箱子种类有对应的vip天数和金币数。同时，100%获得一个装饰品（独立获得），vip、银币、金币（掉落率：85.94%）/2-5级车（掉落率：11.66%）/8级车（掉落率：2.4%）中3选一（3种概率加一起100%），5%概率的皮肤（独立获得）。并且，在新车没有全获得的情况下，优先获得新车。之后，重复获得的车转换成金币。
-    </br>
-    分别把具体的金银币vip的单项给平均分配到85.94%内，依照如此分配2-5级车和8级车，并将概率连续相加，获得命中区间。比如，获得250/500/1000金币的概率都是0.107425，那么获得区间0-0.107425,0.107425-0.21485,0.21485-0.322275。每次抽取时获取1个随机数，和上面的区间进行匹配，如果在区间内，那么命中该物品并进行统计。
-    </b>
-    获取车的方式稍微复杂一些，除了命中以外，需要判断是否已拥有此车，并且判断同类型（2-5级一个类型，8级一个类型）新车是否全部获取。如果没有全部获取，那么从剩下的车里面平均分配区间，并再次生成随机数，进行区间匹配。如果已经全部获取，那么直接计算匹配到的车的金币价格，并加入统计。
-        
+    </p>
+    <details>
+        <summary>大致实现逻辑</summary>
+        箱子种类有对应的vip天数和金币数。同时，100%获得一个装饰品（独立获得），vip、银币、金币（掉落率：85.94%）/2-5级车（掉落率：11.66%）/8级车（掉落率：2.4%）中3选一（3种概率加一起100%），5%概率的皮肤（独立获得）。并且，在新车没有全获得的情况下，优先获得新车。之后，重复获得的车转换成金币。
+    </p>
+        分别把具体的金银币vip的单项给平均分配到85.94%内，依照如此分配2-5级车和8级车，并将概率连续相加，获得命中区间。
+</br>
+        比如，获得250/500/1000金币的概率都是0.107425，那么获得区间0-0.107425,0.107425-0.21485,0.21485-0.322275。每次抽取时获取1个随机数，和上面的区间进行匹配，如果在区间内，那么命中该物品并进行统计。
+</p>
+        获取车的方式稍微复杂一些，除了命中0.8594-0.9760（2-5级），0.9760-1（8金）以外，需要判断是否已拥有此车，并且判断同类型（2-5级一个类型，8级一个类型）新车是否全部获取。如果没有全部获取，那么从剩下的车里面平均分配区间，并再次生成随机数，进行区间匹配。如果已经全部获取，那么直接计算匹配到的车的金币价格，并加入统计。
+    </details>
     <script>
 
         document.getElementById("lastMod").innerHTML = "最后修改时间：" + document.lastModified;
 
-        var rmb=0;
+        var rmb = 0;
         var count = 0;//抽取次数
         var baodi_count = 0;//抽了多少没有8金
         var car_lv2_5_count = 0;
@@ -106,14 +111,14 @@
         };
 
         function gen1() {
-            rmb+=38;
+            rmb += 38;
             jinbi += 750;
             vipDay += 3;
             gen();
             genText();
         }
         function gen11() {
-            rmb+=125;
+            rmb += 125;
             jinbi += 2750;
             vipDay += 11;
             for (i = 0; i < 11; i++) {
@@ -122,7 +127,7 @@
             genText();
         }
         function gen25() {
-            rmb+=250;
+            rmb += 250;
             jinbi += 6250;
             vipDay += 25;
             for (i = 0; i < 25; i++) {
@@ -131,7 +136,7 @@
             genText();
         }
         function gen75() {
-            rmb+=625;
+            rmb += 625;
             jinbi += 18750;
             vipDay += 75;
             for (i = 0; i < 75; i++) {
@@ -141,7 +146,7 @@
         }
         function genText() {
             document.getElementById("demo").innerHTML = "<\p> 总抽取次数：" + count
-                + "<\p> 总花费rmb：" + "<b>"+rmb+"</b>"
+                + "<\p> 总花费rmb：" + "<b>" + rmb + "</b>"
                 + "<\p> 距离下一次保底：" + (50 - baodi_count)
                 + "<\p> 总吃过保底的次数：" + (baodi_count_sum)
                 + "<\p> 总vip天数：" + vipDay
@@ -246,6 +251,7 @@
                 baodi_count = 0;
             }
         }
-    </script> 
+    </script>
 </body>
+
 </html>
