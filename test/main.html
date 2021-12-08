@@ -38,7 +38,7 @@
         var b = [0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.8594, 0.02332, 0.02332, 0.02332, 0.02332, 0.02332, 0.0048, 0.0048, 0.0048, 0.0048, 0.0048];
         var bb = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0048, 0.0048, 0.0048, 0.0048, 0.0048];
         var c = [0, 0, 0, 0, 0, 0, 0, 0, 500, 850, 1200, 1500, 1500, 9650, 9450, 9500, 8450, 10550];
-        
+
         var result_str = "";
         var vipDay = 0;
         var jinbi = 0;
@@ -67,14 +67,14 @@
         };
 
         function gen1() {
-            jinbi+=750;
-            vipDay+=3;
+            jinbi += 750;
+            vipDay += 3;
             gen();
             genText();
         }
         function gen11() {
-            jinbi+=2750;
-            vipDay+=11;
+            jinbi += 2750;
+            vipDay += 11;
             for (i = 0; i < 11; i++) {
                 gen();
             }
@@ -82,22 +82,22 @@
         }
         fun
         function gen25() {
-            jinbi+=6250;
-            vipDay+=25;
+            jinbi += 6250;
+            vipDay += 25;
             for (i = 0; i < 25; i++) {
                 gen();
             }
             genText();
         }
         function gen75() {
-            jinbi+=18750;
-            vipDay+=75;
+            jinbi += 18750;
+            vipDay += 75;
             for (i = 0; i < 75; i++) {
                 gen();
             }
             genText();
         }
-        function genText(){
+        function genText() {
             document.getElementById("demo").innerHTML = "<\p> 总抽取次数：" + count
                 + "<\p> 距离下一次保底：" + (50 - baodi_count)
                 + "<\p> 总吃过保底的次数：" + (baodi_count_sum)
@@ -128,6 +128,9 @@
             }
             result_str += result.name + " ";
 
+            calc(result);
+        }
+        function calc(result) {
             var position = result.position
             if (position < 3) {
                 vipDay += position == 0 ? 1 : position == 1 ? 3 : 7;
@@ -140,6 +143,18 @@
             }
             if (position >= 8 && position < 13) {
                 if (lv_2_to_5_tank_had_car.has(position)) {//已经抽到过
+                    if (lv_2_to_5_tank_had_car.size < 5) {
+                        result = random(a, [
+                            0, 0, 0, 0, 0, 0, 0, 0,
+                            lv_8_tank_had_car.has(8) ? 0 : 0.02332,
+                            lv_8_tank_had_car.has(9) ? 0 : 0.02332,
+                            lv_8_tank_had_car.has(10) ? 0 : 0.02332,
+                            lv_8_tank_had_car.has(11) ? 0 : 0.02332,
+                            lv_8_tank_had_car.has(12) ? 0 : 0.02332,
+                            0, 0, 0, 0, 0]);
+                        calc(result);
+                        return;
+                    }
                     lv_2_to_5_tank += result.name + "(转换成" + c[position] + "金币),";
                     jinbi += c[position];
                 } else {
@@ -149,8 +164,18 @@
                 // console.log(lv_2_to_5_tank_had_car);
                 lv_2_to_5_tank.substring(0, lv_2_to_5_tank.length - 1);
             }
-            if (position >= 13) {
-                if (lv_8_tank_had_car.has(position)) {
+            if (position >= 13) {//8级车
+                if (lv_8_tank_had_car.has(position)) {//已经抽到过
+                    if (lv_8_tank_had_car.size < 5) {
+                        result = random(a, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            lv_8_tank_had_car.has(13) ? 0 : 0.0048,
+                            lv_8_tank_had_car.has(14) ? 0 : 0.0048,
+                            lv_8_tank_had_car.has(15) ? 0 : 0.0048,
+                            lv_8_tank_had_car.has(16) ? 0 : 0.0048,
+                            lv_8_tank_had_car.has(17) ? 0 : 0.0048]);
+                        calc(result);
+                        return;
+                    }
                     lv_8_tank += result.name + "(转换成" + c[position] + "金币),";
                     jinbi += c[position];
                 } else {
