@@ -120,13 +120,15 @@
             return null;
         };
 
-        function gen1() {
+        function gen3() {
             rmb += 38;
             jinbi += 750;
             xiangzi_jinbi += 750;
             vipDay += 3;
             xiangzi_vipDay +=3;
-            gen();
+            for (i = 0; i < 3; i++) {
+                gen();
+            }
             genText();
         }
         function gen11() {
