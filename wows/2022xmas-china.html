@@ -46,12 +46,7 @@
     <details>
         <summary>另一个友情提示</summary>虚拟道具始终都是存在数据库里的数据而已，算来算去这世界只有马化腾亏了。<b>游戏只是为了娱乐，大家要好好吃饭。</b>水母 爱心 水母
     </details>
-    </p>
-    <a href="../wot/2022xmas.html">外服版本开箱模拟器</a> |
-    <a href="https://github.com/liujingtech/liujingtech.github.io"><img
-            src="https://img.shields.io/github/forks/liujingtech/liujingtech.github.io?style=social"></a>
-    <a href="https://github.com/liujingtech/liujingtech.github.io"><img
-            src="https://img.shields.io/github/stars/liujingtech/liujingtech.github.io?style=social"></a>
+    <a href="../wot/2022xmas.html">外服版本开箱模拟器</a>
     <script>
 
         document.getElementById("lastMod").innerHTML = "最后修改时间：" + document.lastModified;
@@ -63,22 +58,35 @@
         var car_lv8_count = 0;
         var baodi_count_sum = 0;
         var a = [
-            "1天坦克世界高级账号", "3天坦克世界高级账号", "7天坦克世界高级账号", "250金币", "500金币", "1000金币", "100000银币", "500000银币",
-            "35R", "M15", "玛蒂尔达LVT", "M4-85", "KV-1加强型",
-            "博福斯TRV", "卡利班", "M-IV-Y", "122 TM", "斯柯达 T56"
+            "V-VII级舰船", "VIII-IX级舰船", "X级和稀有舰船",
+            "500 金币", "2500 煤炭", "30 天高级账户",
+            "5x 新年或Type-3新年涂装", "4x 新年天空涂装", "4x 相同类型的涂装(冬日，冷杉树或新年飘带)", "5x 相同类型的特殊信号旗", "50x 相同类型的经济信号旗"
         ];
+        var aa = [
+            0.02, 0.004, 0.001, 0.05, 0.07, 0.01, 0.1, 0.115,
+            0.15, 0.08, 0.40];
         var b = [
-            0.107425, 0.107425, 0.107425, 0.107425, 0.107425, 0.107425, 0.107425, 0.107425,
-            0.02332, 0.02332, 0.02332, 0.02332, 0.02332,
-            0.0048, 0.0048, 0.0048, 0.0048, 0.0048];
+            "V-VII级舰船", "VIII-IX级舰船", "X级和稀有舰船",
+            "1500 金币", "7500 煤炭", "90 天高级账户",
+            "15x 新年或Type-3新年涂装", "12x 新年天空涂装", "12x 相同类型的涂装(冬日，冷杉树或新年飘带)","15x 相同类型的特殊信号旗"
+        ];
         var bb = [
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0,
-            0.2, 0.2, 0.2, 0.2, 0.2];
+            0.07, 0.015, 0.005,
+            0.05, 0.07, 0.01,
+             0.12, 0.16,0.18, 0.32];
         var c = [
-            0, 0, 0, 0, 0, 0, 0, 0,
-            500, 850, 1200, 1500, 1500,
-            9650, 9450, 9500, 8450, 10550];
+            "V-VII级舰船", "VIII-IX级舰船", "X级和稀有舰船",
+            "2500金币", "12,500煤炭", "180天高级账户",
+            "5x 春日天空，亚洲灯笼或马赛克涂装",
+            "25x 新年或Type-3新年涂装","20x 新年天空涂装","20x 相同类型的迷彩(冬日迷彩、霜冷杉树或新年彩旗)","30x 相同类型的特殊信号旗(双足飞龙，红龙，龙，衔尾蛇，斯库拉，九头蛇，巴西利斯克，利维坦)",
+        ];
+        var cc = [
+            0.12, 0.3, 0.1,
+            0.5, 0.7, 0.1,
+            0.6, 0.6, 0.10, 0.9, 0.40,
+        ];
+
+        https://nga.178.com/read.php?&tid=29690413
 
         var result_str = "";
         var vipDay = 0;
@@ -154,7 +162,7 @@
             xiangzi_jinbi += 18750;
             vipDay += 75;
             xiangzi_vip += 75;
-            for (i = 0; i < 30000; i++) {
+            for (i = 0; i < 75; i++) {
                 gen();
             }
             genText();
@@ -169,36 +177,12 @@
                 + "<\p> 总金币：" + jinbi + " = 自带" + xiangzi_jinbi + "金币 + 开箱" + jiangli_jinbi + "金币"
                 + "<\p> 总银币：" + yinbi + " = 自带" + xiangzi_yinbi + "银币 + 开箱" + jiangli_yinbi + "银币"
                 + "<\p> II–V级坦克（抽到" + car_lv2_5_count + "台，期望出货" + count * 0.1166 + "台）：" + lv_2_to_5_tank
-                + "<\p> VIII级坦克（抽到" + car_lv8_count + "台,期望出货" + ((count * 0.024) + baodi_count_sum) + "台）：" + lv_8_tank
+                + "<\p> VIII级坦克（抽到" + car_lv8_count + "台,期望出货" + (((count * 0.024) + baodi_count_sum)+"").substring + "台）：" + lv_8_tank
                 + "<\p> <details><summary>明细</summary>" + result_str + "</details>"
                 ;
         }
         function init() {
             location.reload();
-        }
-        function helloWorld(count) {
-            //常量 各礼物中奖率
-            const bingoRate = [
-                { name: "小礼物", rate: 100, reset: 0 }, //默认小礼物
-                { name: "会员", rate: 85.94, reset: 0 },
-                { name: "8级坦克", rate: 2.4, reset: 50 },
-                { name: "其他坦克", rate: 11.66, reset: 0 },
-                { name: "3D坦克", rate: 5, reset: 0 }
-            ]
-
-            let result = []
-
-            for (let i = 1; i <= count; i++) {
-                let subResult = []
-                bingoRate.forEach((item) => {
-                    const normalRate = 1 - Math.pow((100 - item.rate) / 100, i)
-                    const resetRate = item.reset > 0 ? Math.floor(i / item.reset) : 0
-                    const finalRate = item.name + ((normalRate + resetRate) * 100).toFixed(2) + "%"
-                    subResult.push(finalRate)
-                })
-                result.push({ count: i, result: subResult })
-            }
-            return result
         }
 
         function gen() {
