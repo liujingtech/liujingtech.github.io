@@ -68,17 +68,17 @@
         var b = [
             "V-VII级舰船", "VIII-IX级舰船", "X级和稀有舰船",
             "1500 金币", "7500 煤炭", "90 天高级账户",
-            "15x 新年或Type-3新年涂装", "12x 新年天空涂装", "12x 相同类型的涂装(冬日，冷杉树或新年飘带)","15x 相同类型的特殊信号旗"
+            "15x 新年或Type-3新年涂装", "12x 新年天空涂装", "12x 相同类型的涂装(冬日，冷杉树或新年飘带)", "15x 相同类型的特殊信号旗"
         ];
         var bb = [
             0.07, 0.015, 0.005,
             0.05, 0.07, 0.01,
-             0.12, 0.16,0.18, 0.32];
+            0.12, 0.16, 0.18, 0.32];
         var c = [
             "V-VII级舰船", "VIII-IX级舰船", "X级和稀有舰船",
             "2500金币", "12,500煤炭", "180天高级账户",
             "5x 春日天空，亚洲灯笼或马赛克涂装",
-            "25x 新年或Type-3新年涂装","20x 新年天空涂装","20x 相同类型的迷彩(冬日迷彩、霜冷杉树或新年彩旗)","30x 相同类型的特殊信号旗(双足飞龙，红龙，龙，衔尾蛇，斯库拉，九头蛇，巴西利斯克，利维坦)",
+            "25x 新年或Type-3新年涂装", "20x 新年天空涂装", "20x 相同类型的迷彩(冬日迷彩、霜冷杉树或新年彩旗)", "30x 相同类型的特殊信号旗(双足飞龙，红龙，龙，衔尾蛇，斯库拉，九头蛇，巴西利斯克，利维坦)",
         ];
         var cc = [
             0.12, 0.3, 0.1,
@@ -89,7 +89,7 @@
         https://nga.178.com/read.php?&tid=29690413
 
         var result_str = "";
-        var vipDay = 0;
+        var vip = 0;
         var xiangzi_vip = 0;
         var jiangli_vip = 0;
         var jinbi = 0;
@@ -125,10 +125,7 @@
 
         function gen3() {
             rmb += 38;
-            jinbi += 750;
-            xiangzi_jinbi += 750;
-            vipDay += 3;
-            xiangzi_vip += 3;
+
             for (i = 0; i < 3; i++) {
                 gen();
             }
@@ -136,10 +133,7 @@
         }
         function gen11() {
             rmb += 125;
-            jinbi += 2750;
-            xiangzi_jinbi += 2750;
-            vipDay += 11;
-            xiangzi_vip += 11;
+
             for (i = 0; i < 11; i++) {
                 gen();
             }
@@ -147,10 +141,6 @@
         }
         function gen25() {
             rmb += 250;
-            jinbi += 6250;
-            xiangzi_jinbi += 6250;
-            vipDay += 25;
-            xiangzi_vip += 25;
             for (i = 0; i < 25; i++) {
                 gen();
             }
@@ -158,10 +148,6 @@
         }
         function gen75() {
             rmb += 625;
-            jinbi += 18750;
-            xiangzi_jinbi += 18750;
-            vipDay += 75;
-            xiangzi_vip += 75;
             for (i = 0; i < 75; i++) {
                 gen();
             }
@@ -169,15 +155,15 @@
         }
         function genText() {
             var last_baodi = 50 - baodi_count;
-            document.getElementById("demo").innerHTML = "<\p> 总抽取次数：" + count
+            document.getElementById("demo").innerHTML =
+                "<\p> 总抽取次数：" + count
                 + "<\p> 总花费rmb：" + "<b>" + rmb + "</b>"
-                + "<\p> 距离下一次保底：" + last_baodi
-                + "<\p> 总吃过保底的次数：" + (baodi_count_sum)
-                + "<\p> 总vip天数：" + vipDay + "天 = 自带" + xiangzi_vip + "天 + 开箱" + jiangli_vip + "天"
-                + "<\p> 总金币：" + jinbi + " = 自带" + xiangzi_jinbi + "金币 + 开箱" + jiangli_jinbi + "金币"
-                + "<\p> 总银币：" + yinbi + " = 自带" + xiangzi_yinbi + "银币 + 开箱" + jiangli_yinbi + "银币"
-                + "<\p> II–V级坦克（抽到" + car_lv2_5_count + "台，期望出货" + count * 0.1166 + "台）：" + lv_2_to_5_tank
-                + "<\p> VIII级坦克（抽到" + car_lv8_count + "台,期望出货" + (((count * 0.024) + baodi_count_sum)+"").substring + "台）：" + lv_8_tank
+                + "<\p> 总vip天数：" + vip + ""
+                + "<\p> 总金币：" + jinbi + ""
+                + "<\p> 总煤炭：" + yinbi + ""
+                + "<\p> V-VII级舰船（抽到" + car_lv2_5_count + "台，期望出货" + count * 0.1166 + "台）：" + lv_2_to_5_tank
+                + "<\p> VIII-IX级舰船（抽到" + car_lv8_count + "台,期望出货" + (((count * 0.024) + baodi_count_sum) + "").substring + "台）：" + lv_8_tank
+                + "<\p> X级舰船（抽到" + car_lv8_count + "台,期望出货" + (((count * 0.024) + baodi_count_sum) + "").substring + "台）：" + lv_8_tank
                 + "<\p> <details><summary>明细</summary>" + result_str + "</details>"
                 ;
         }
@@ -187,98 +173,12 @@
 
         function gen() {
             count += 1;
-            baodi_count += 1;//每次都加一，8金抽到就归零
             var result;
-
-            console.log(baodi_count);
-            if (baodi_count == 50) {
-                baodi_count_sum++;
-
-                result = random(a, bb)
-                if (result != null) {
-                    console.log(baodi_count + " " + result.name + " " + result.position);
-                } else {
-                    return;
-                }
-            } else {
-                result = random(a, b);
-            }
-            result_str += result.name + " ";
-
-            if (result != null) {
-                calc(result);
-            }
+            result = random(a, bb)
         }
         function calc(result) {
             var position = result.position
-            if (position < 3) {
-                vipDay += position == 0 ? 1 : position == 1 ? 3 : 7;
-                jiangli_vip += position == 0 ? 1 : position == 1 ? 3 : 7;
-            }
-            if (position >= 3 && position < 6) {
-                jinbi += position == 3 ? 250 : position == 4 ? 500 : 100;
-                jiangli_jinbi += position == 3 ? 250 : position == 4 ? 500 : 100;
-            }
-            if (position >= 6 && position < 8) {
-                yinbi += position == 6 ? 10000 : 500000;
-                jiangli_yinbi += position == 6 ? 10000 : 500000;
-            }
-            if (position >= 8 && position < 13) {
-                if (lv_2_to_5_tank_had_car.has(position)) {//已经抽到过
-                    if (lv_2_to_5_tank_had_car.size < 5) {
-                        result = random(a, [
-                            0, 0, 0, 0, 0, 0, 0, 0,
-                            lv_2_to_5_tank_had_car.has(8) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
-                            lv_2_to_5_tank_had_car.has(9) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
-                            lv_2_to_5_tank_had_car.has(10) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
-                            lv_2_to_5_tank_had_car.has(11) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
-                            lv_2_to_5_tank_had_car.has(12) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
-                            0, 0, 0, 0, 0]);
-                        if (result != null) {
-                            calc(result);
-                        }
-                        return;
-                    }
-                    lv_2_to_5_tank += result.name + "(+" + c[position] + "金币),";
-                    jinbi += c[position];
-                    jiangli_jinbi += c[position];
-                    car_lv2_5_count++;
-                } else {
-                    lv_2_to_5_tank += "<font color=red>" + result.name + "</font>,";
-                    lv_2_to_5_tank_had_car.add(position);
-                    car_lv2_5_count++;
-                }
-                // console.log(lv_2_to_5_tank_had_car);
-                lv_2_to_5_tank.substring(0, lv_2_to_5_tank.length - 1);
-            }
-            if (position >= 13) {//8级车
-                if (lv_8_tank_had_car.has(position)) {//已经抽到过
-                    if (lv_8_tank_had_car.size < 5) {
-                        result = random(a, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                            lv_8_tank_had_car.has(13) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
-                            lv_8_tank_had_car.has(14) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
-                            lv_8_tank_had_car.has(15) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
-                            lv_8_tank_had_car.has(16) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
-                            lv_8_tank_had_car.has(17) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
-                        ]);
-                        if (result != null) {
-                            calc(result);
-                        }
-                        return;
-                    }
-                    lv_8_tank += result.name + "(+" + c[position] + "金币),";
-                    jinbi += c[position];
-                    jiangli_jinbi += c[position];
-                    car_lv8_count++;
-                } else {
-                    lv_8_tank += "<font color=red>" + result.name + "</font>,";
-                    lv_8_tank_had_car.add(position);
-                    car_lv8_count++;
-                }
-                // console.log(lv_8_tank_had_car)
-                lv_8_tank.substring(0, lv_8_tank.length - 1);
-                baodi_count = 0;
-            }
+            
         }
     </script>
 </body>

@@ -181,12 +181,12 @@
                 jiangli_vip += position == 0 ? 1 : position == 1 ? 3 : 7;
             }
             if (position >= 3 && position < 6) {
-                jinbi += position == 3 ? 250 : position == 4 ? 500 : 100;
-                jiangli_jinbi += position == 3 ? 250 : position == 4 ? 500 : 100;
+                jinbi += position == 3 ? 250 : position == 4 ? 500 : 1000;
+                jiangli_jinbi += position == 3 ? 250 : position == 4 ? 500 : 1000;
             }
             if (position >= 6 && position < 8) {
-                yinbi += position == 6 ? 10000 : 500000;
-                jiangli_yinbi += position == 6 ? 10000 : 500000;
+                yinbi += position == 6 ? 100000 : 500000;
+                jiangli_yinbi += position == 6 ? 100000 : 500000;
             }
             if (position >= 8 && position < 13) {
                 if (lv_2_to_5_tank_had_car.has(position)) {//已经抽到过
