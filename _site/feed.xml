@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    
+    <title>小刘的学习笔记</title>
+    
+    
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    
+    
+      <item>
+        <title>Flutter 渲染流水线</title>
+        <description>
+          
+          
+架构分三个部分，App，Framework，Engine。
+
+
+整个流程和 Android
+
+        </description>
+        <pubDate>Tue, 21 Dec 2021 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2021-12-21-Flutter-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/</link>
+        <guid isPermaLink="true">http://localhost:4000/2021-12-21-Flutter-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/</guid>
+      </item>
+    
+      <item>
+        <title>Android的硬件加速</title>
+        <description>
+          
+          通常硬件加速就是指把某种特型计算工作交给的专门针对这部分计算而设计的硬件，比如把挖矿的运算给专门的挖矿的处理器，把游戏画面的渲染计算交给 GPU。在 Android 这里就是把 View 的绘制处理交给 GPU。换句话说，就是把 draw 到 canvas 上面的数据通过 GPU渲染管道 处理成像素点给屏幕。 https://developer.android.com/guide/topics/graphics/hardware-accel#controlling Android 绘制模型 其实分为两个部分，基于软件的绘制模型和硬件加速绘制模型。 他们相同的部分都是会对调用 view 的无效化处理（invalidation）的层次结构进行一次遍历（Traversal）。不同的是软件绘制时，对 invalidate 的 view 计算了大小和位置，得到了一个 Rect ，也就是一块需要重新被绘制的脏区域，如果这个区域有多个 view 被叠加，那么他们在这个 rect 中的部分会被重新绘制；硬件绘制是会先把 DisplayList 更新新的 view ，然后通过 DisplayList 的整体结构进行合并（比如两个 view 的部分有重合，会避免重复绘制下面被盖住的部分；比如在视图外的 view 不会被渲染）。 https://blog.csdn.net/xiaosongluo/article/details/45070749 渲染场景 纯软件绘制 硬件加速 加速效果分析 页面初始化 绘制所有View 创建所有DisplayList GPU分担了复杂计算任务 在一个复杂页面调用背景透明TextView的setText()，且调用后其尺寸位置不变...
+        </description>
+        <pubDate>Tue, 16 Nov 2021 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2021-11-16-Android%E7%9A%84%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F/</link>
+        <guid isPermaLink="true">http://localhost:4000/2021-11-16-Android%E7%9A%84%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F/</guid>
+      </item>
+    
+      <item>
+        <title>Android 渲染流程</title>
+        <description>
+          学习 Android 渲染看的资料的总结。 - 
+          2018年的流转图。解释一下这个图上的点和下面的条对应关系。 当一个用户点击了 RecyclerView 的 item 发生了什么 模拟一个简单的点击触发修改屏幕像素的流程。 整个 Android 的层次结构 实际上一般app发生 measure（测量大小） layout（布局位置） draw（绘制内容） 的的区域。这具体的部分是我们当前 app 自己的视图结构(View Hierarchy)。 也就是这样的 xml 布局。 最终调用到了，framework层的View.java中的 invalidate() Invalidation 机制本身并不做任何的绘制，而是告诉视图结构(View Hierarchy)需要被绘制了的处理机制。他会从下到上传递失效状态，并在顶层开始调用重新绘制。 然后会到ViewRootImpl的invalidateChild()，他调用了scheduleTraversals() 执行渲染的所有阶段.也就是 measure layout draw。scheduleTraversals 最后调用 performDraw，最后触发了 draw。这里有个硬件加速的分支优化，硬件加速开启时，会通过 GetDisplayList 来走，否则是传统的 view 渲染逻辑。 DisplayList 是一个存储了渲染信息的类型结构，所有的 Canvas 中的 drawLine drawBackgroud 等操作都会被存储在 DisplayList，这是一种压缩渲染信息的一种方式。 然后回到刚刚说的 GetDisplayList ，视图层次每一层都会调用，然后和之前的进行对比看是否有变更来重新渲染。 最后在...
+        </description>
+        <pubDate>Mon, 15 Nov 2021 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2021-11-15-Android-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/</link>
+        <guid isPermaLink="true">http://localhost:4000/2021-11-15-Android-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/</guid>
+      </item>
+    
+      <item>
+        <title>指令流水线</title>
+        <description>
+          
+          指令流水线
+CPU内的一种指令执行机制，还有一种优化版叫超标量指令流水线。
+
+介绍
+不使用流水线技术时，需要将一个指令从头到位完整的执行才能执行下一个指令，有些模块会被闲置。在指令流水线中，可以将指令拆分成多个子任务，在上一个指令的其中一个子任务完成以后，把执行该指令的模块让给下一个指令的子任务。
+
+解释
+
+如图，一共有三条指令，在执行第一条的分析子任务时，取值模块已经空闲，这个时候可以执行第二条执行的取值。这样能最小化空闲等待时间。
+
+缺点
+点子任务完成耗时差异大，会导致后面的任务断流。如果流水线设计过深，可能需要同时搭配分支预测。极端情况下，可能会有未流水线的处理器性能一致。
+
+超标量流水线
+指可以同时完成多个指令的流水线。
+
+参考资料
+
+  指令流水线 https://zh.wikipedia.org/wiki/%E6%8C%87%E4%BB%A4%E7%AE%A1%E7%B7%9A%E5%8C%96
+  超标量 https://zh.wikipedia.org/wiki/%E8%B6%85%E7%B4%94%E9%87%8F
+
+
+
+        </description>
+        <pubDate>Mon, 01 Nov 2021 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2021-11-01-%E6%8C%87%E4%BB%A4%E6%B5%81%E6%B0%B4%E7%BA%BF/</link>
+        <guid isPermaLink="true">http://localhost:4000/2021-11-01-%E6%8C%87%E4%BB%A4%E6%B5%81%E6%B0%B4%E7%BA%BF/</guid>
+      </item>
+    
+      <item>
+        <title>CPU 和 GPU 的区别</title>
+        <description>
+          
+          常常提及 CPU 和 GPU 但是大部分时候只是知道名词具体指向什么东西，但是对其中的概念和区别不是很了解，借着梳理渲染知识的机会重新整理整理学习。 区别 用途上的区别：CPU 被设计出来处理通用计算的核心部件，能处理很多复杂的任务和不同的数据结构；GPU 是专门针对制定类型的图形任务而设计的一种ASIC（专用集成电路）。一台计算机，只有 GPU 是不能运行的，但是只有 CPU 可以。 硬件模块之间的区别：CPU 运算能力特别强的 ALU。大的缓存用来降低访问数据的延时。有复杂的控制模块来分支预测。和对流水线中被前面指令过慢被后续指令依赖的数据做数据转发；GPU 的特点是有很多但计算能力不高的 ALU 。少量的缓存，目的是针对在众多线程中请求相同数据时，进行请求合并，然后再向 DRAM 请求数据并更新，在获取数据之后会转发到对应的线程中。 访问 DRAM 不可避免的会造成一定程度的延时。GPU的虽然有dram延时，却有非常多的ALU和非常多的thread. 为了平衡内存延时的问题，我们可以中充分利用多的ALU的特性达到一个非常大的吞吐量的效果。尽可能多的分配多的Threads.通常来看GPU ALU会有非常重的pipeline就是因为这样。 从图上可以看出来，GPU 有特别多的计算单元，以及超长流水线，较为简单的控制模块和缓存。主要目的就是为了处理大量计算方式相似但是数据之间不相互依赖的任务，比如图像中的像素点。通常 CPU 可以处理 2D 的图像，但是复杂的 3D 图形计算，还是使用专门是设计用于此任务的 GPU 更为适合。同时 GPU 的并行计算架构也适合于密码破译，大数据处理，金融分析等领域。 CPU擅长逻辑控制，串行的运算。和通用类型数据运算不同，GPU擅长的是大规模并发计算，这也正是密码破解等所需要的。所以GPU除了图像处理，也越来越多的参与到计算当中来。 什么是 CPU 最为早期的 CPU 其实是针对固定大型应用被定制的。但是发展到现代，CPU 更多的是一种为了通用处理更多样任务而制造的。所以他有数量不多，但性能很强大的核心，用来处理计算任务。 什么是 GPU GPU 是在 CPU...
+        </description>
+        <pubDate>Thu, 28 Oct 2021 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2021-10-28-CPU-%E5%92%8C-GPU%E7%9A%84%E5%8C%BA%E5%88%AB/</link>
+        <guid isPermaLink="true">http://localhost:4000/2021-10-28-CPU-%E5%92%8C-GPU%E7%9A%84%E5%8C%BA%E5%88%AB/</guid>
+      </item>
+    
+  </channel>
+</rss>

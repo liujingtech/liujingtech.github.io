@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Beautiful Jekyll 5.0.0 | Copyright Dean Attali 2020 -->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  
+
+  
+
+  <title>CPU 和 GPU 的区别</title>
+
+  
+  <meta name="author" content="liujingtech">
+  
+
+  <meta name="description" content="常常提及 CPU 和 GPU 但是大部分时候只是知道名词具体指向什么东西，但是对其中的概念和区别不是很了解，借着梳理渲染知识的机会重新整理整理学习。 区别 用途上的区别：CPU 被设计出来处理通用计算的核心部件，能处理很多复杂的任务和不同的数据结构；GPU 是专门针对制定类型的图形任务而设计的一种ASIC（专用集成电路）。一台计算机，只有 GPU 是不能运行的，但是只有 CPU 可以。 硬件模块之间的区别：CPU 运算能力特别强的 ALU。大的缓存用来降低访问数据的延时。有复杂的控制模块来分支预测。和对流水线中被前面指令过慢被后续指令依赖的数据做数据转发；GPU 的特点是有很多但计算能力不高的 ALU 。少量的缓存，目的是针对在众多线程中请求相同数据时，进行请求合并，然后再向 DRAM 请求数据并更新，在获取数据之后会转发到对应的线程中。 访问 DRAM 不可避免的会造成一定程度的延时。GPU的虽然有dram延时，却有非常多的ALU和非常多的thread. 为了平衡内存延时的问题，我们可以中充分利用多的ALU的特性达到一个非常大的吞吐量的效果。尽可能多的分配多的Threads.通常来看GPU ALU会有非常重的pipeline就是因为这样。 从图上可以看出来，GPU 有特别多的计算单元，以及超长流水线，较为简单的控制模块和缓存。主要目的就是为了处理大量计算方式相似但是数据之间不相互依赖的任务，比如图像中的像素点。通常 CPU 可以处理 2D 的图像，但是复杂的 3D 图形计算，还是使用专门是设计用于此任务的 GPU 更为适合。同时 GPU 的并行计算架构也适合于密码破译，大数据处理，金融分析等领域。 CPU擅长逻辑控制，串行的运算。和通用类型数据运算不同，GPU擅长的是大规模并发计算，这也正是密码破解等所需要的。所以GPU除了图像处理，也越来越多的参与到计算当中来。 什么是 CPU 最为早期的 CPU 其实是针对固定大型应用被定制的。但是发展到现代，CPU 更多的是一种为了通用处理更多样任务而制造的。所以他有数量不多，但性能很强大的核心，用来处理计算任务。 什么是 GPU GPU 是在 CPU...">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+      
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+    
+      
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+
+
+    
+      
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic">
+
+
+    
+      
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800">
+
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/assets/css/bootstrap-social.css">
+    
+      <link rel="stylesheet" href="/assets/css/beautifuljekyll.css">
+    
+  
+
+  
+
+  
+  
+  
+
+  
+
+  
+  <meta property="og:site_name" content="小刘的学习笔记">
+  <meta property="og:title" content="CPU 和 GPU 的区别">
+  <meta property="og:description" content="常常提及 CPU 和 GPU 但是大部分时候只是知道名词具体指向什么东西，但是对其中的概念和区别不是很了解，借着梳理渲染知识的机会重新整理整理学习。 区别 用途上的区别：CPU 被设计出来处理通用计算的核心部件，能处理很多复杂的任务和不同的数据结构；GPU 是专门针对制定类型的图形任务而设计的一种ASIC（专用集成电路）。一台计算机，只有 GPU 是不能运行的，但是只有 CPU 可以。 硬件模块之间的区别：CPU 运算能力特别强的 ALU。大的缓存用来降低访问数据的延时。有复杂的控制模块来分支预测。和对流水线中被前面指令过慢被后续指令依赖的数据做数据转发；GPU 的特点是有很多但计算能力不高的 ALU 。少量的缓存，目的是针对在众多线程中请求相同数据时，进行请求合并，然后再向 DRAM 请求数据并更新，在获取数据之后会转发到对应的线程中。 访问 DRAM 不可避免的会造成一定程度的延时。GPU的虽然有dram延时，却有非常多的ALU和非常多的thread. 为了平衡内存延时的问题，我们可以中充分利用多的ALU的特性达到一个非常大的吞吐量的效果。尽可能多的分配多的Threads.通常来看GPU ALU会有非常重的pipeline就是因为这样。 从图上可以看出来，GPU 有特别多的计算单元，以及超长流水线，较为简单的控制模块和缓存。主要目的就是为了处理大量计算方式相似但是数据之间不相互依赖的任务，比如图像中的像素点。通常 CPU 可以处理 2D 的图像，但是复杂的 3D 图形计算，还是使用专门是设计用于此任务的 GPU 更为适合。同时 GPU 的并行计算架构也适合于密码破译，大数据处理，金融分析等领域。 CPU擅长逻辑控制，串行的运算。和通用类型数据运算不同，GPU擅长的是大规模并发计算，这也正是密码破解等所需要的。所以GPU除了图像处理，也越来越多的参与到计算当中来。 什么是 CPU 最为早期的 CPU 其实是针对固定大型应用被定制的。但是发展到现代，CPU 更多的是一种为了通用处理更多样任务而制造的。所以他有数量不多，但性能很强大的核心，用来处理计算任务。 什么是 GPU GPU 是在 CPU...">
+
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:article:author" content="liujingtech">
+  <meta property="og:article:published_time" content="2021-10-28T00:00:00+08:00">
+  <meta property="og:url" content="http://localhost:4000/2021-10-28-CPU-%E5%92%8C-GPU%E7%9A%84%E5%8C%BA%E5%88%AB/">
+  <link rel="canonical" href="http://localhost:4000/2021-10-28-CPU-%E5%92%8C-GPU%E7%9A%84%E5%8C%BA%E5%88%AB/">
+  
+
+  
+  <meta name="twitter:card" content="summary">
+  
+  <meta name="twitter:site" content="@">
+  <meta name="twitter:creator" content="@">
+
+  <meta property="twitter:title" content="CPU 和 GPU 的区别">
+  <meta property="twitter:description" content="常常提及 CPU 和 GPU 但是大部分时候只是知道名词具体指向什么东西，但是对其中的概念和区别不是很了解，借着梳理渲染知识的机会重新整理整理学习。 区别 用途上的区别：CPU 被设计出来处理通用计算的核心部件，能处理很多复杂的任务和不同的数据结构；GPU 是专门针对制定类型的图形任务而设计的一种ASIC（专用集成电路）。一台计算机，只有 GPU 是不能运行的，但是只有 CPU 可以。 硬件模块之间的区别：CPU 运算能力特别强的 ALU。大的缓存用来降低访问数据的延时。有复杂的控制模块来分支预测。和对流水线中被前面指令过慢被后续指令依赖的数据做数据转发；GPU 的特点是有很多但计算能力不高的 ALU 。少量的缓存，目的是针对在众多线程中请求相同数据时，进行请求合并，然后再向 DRAM 请求数据并更新，在获取数据之后会转发到对应的线程中。 访问 DRAM 不可避免的会造成一定程度的延时。GPU的虽然有dram延时，却有非常多的ALU和非常多的thread. 为了平衡内存延时的问题，我们可以中充分利用多的ALU的特性达到一个非常大的吞吐量的效果。尽可能多的分配多的Threads.通常来看GPU ALU会有非常重的pipeline就是因为这样。 从图上可以看出来，GPU 有特别多的计算单元，以及超长流水线，较为简单的控制模块和缓存。主要目的就是为了处理大量计算方式相似但是数据之间不相互依赖的任务，比如图像中的像素点。通常 CPU 可以处理 2D 的图像，但是复杂的 3D 图形计算，还是使用专门是设计用于此任务的 GPU 更为适合。同时 GPU 的并行计算架构也适合于密码破译，大数据处理，金融分析等领域。 CPU擅长逻辑控制，串行的运算。和通用类型数据运算不同，GPU擅长的是大规模并发计算，这也正是密码破解等所需要的。所以GPU除了图像处理，也越来越多的参与到计算当中来。 什么是 CPU 最为早期的 CPU 其实是针对固定大型应用被定制的。但是发展到现代，CPU 更多的是一种为了通用处理更多样任务而制造的。所以他有数量不多，但性能很强大的核心，用来处理计算任务。 什么是 GPU GPU 是在 CPU...">
+
+  
+
+  
+
+
+  
+
+  
+
+</head>
+
+
+<body>
+
+  
+
+
+  <nav class="navbar navbar-expand-xl navbar-light fixed-top navbar-custom top-nav-regular"><a class="navbar-brand" href="http://localhost:4000/">小刘的学习笔记</a><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="main-navbar">
+    <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/test/main.html">坦克世界2021新年活动抽箱子模拟器</a>
+          </li>
+        <li class="nav-item">
+          <a class="nav-link" id="nav-search-link" href="#" title="Search">
+            <span id="nav-search-icon" class="fa fa-search"></span>
+            <span id="nav-search-text">Search</span>
+          </a>
+        </li></ul>
+  </div>
+
+  
+
+  
+
+</nav>
+
+
+
+<div id="beautifuljekyll-search-overlay">
+
+  <div id="nav-search-exit" title="Exit search">✕</div>
+  <input type="text" id="nav-search-input" placeholder="Search">
+  <ul id="search-results-container"></ul>
+  
+  <script src="https://unpkg.com/simple-jekyll-search@latest/dest/simple-jekyll-search.min.js"></script>
+  <script>
+    var searchjson = '[ \
+       \
+        { \
+          "title"    : "Flutter 渲染流水线", \
+          "category" : "Flutter渲染", \
+          "url"      : "/2021-12-21-Flutter-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/", \
+          "date"     : "December 21, 2021" \
+        }, \
+       \
+        { \
+          "title"    : "Android的硬件加速", \
+          "category" : "Android渲染", \
+          "url"      : "/2021-11-16-Android%E7%9A%84%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F/", \
+          "date"     : "November 16, 2021" \
+        }, \
+       \
+        { \
+          "title"    : "Android 渲染流程", \
+          "category" : "渲染Android", \
+          "url"      : "/2021-11-15-Android-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/", \
+          "date"     : "November 15, 2021" \
+        }, \
+       \
+        { \
+          "title"    : "指令流水线", \
+          "category" : "CPU", \
+          "url"      : "/2021-11-01-%E6%8C%87%E4%BB%A4%E6%B5%81%E6%B0%B4%E7%BA%BF/", \
+          "date"     : "November  1, 2021" \
+        }, \
+       \
+        { \
+          "title"    : "CPU 和 GPU 的区别", \
+          "category" : "CPUGPU", \
+          "url"      : "/2021-10-28-CPU-%E5%92%8C-GPU%E7%9A%84%E5%8C%BA%E5%88%AB/", \
+          "date"     : "October 28, 2021" \
+        }, \
+       \
+       \
+        { \
+          "title"    : "About me", \
+          "category" : "page", \
+          "url"      : "/aboutme/", \
+          "date"     : "January 1, 1970" \
+        }, \
+       \
+        { \
+          "title"    : "欢迎", \
+          "category" : "page", \
+          "url"      : "/", \
+          "date"     : "January 1, 1970" \
+        }, \
+       \
+        { \
+          "title"    : "Tag Index", \
+          "category" : "page", \
+          "url"      : "/tags/", \
+          "date"     : "January 1, 1970" \
+        } \
+       \
+    ]';
+    searchjson = JSON.parse(searchjson);
+
+    var sjs = SimpleJekyllSearch({
+      searchInput: document.getElementById('nav-search-input'),
+      resultsContainer: document.getElementById('search-results-container'),
+      json: searchjson
+    });
+  </script>
+</div>
+
+
+
+
+
+  <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+
+
+
+<header class="header-section ">
+
+<div class="intro-header no-img">
+  <div class="container-md">
+    <div class="row">
+      <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1">
+        <div class="post-heading">
+          <h1>CPU 和 GPU 的区别</h1>
+          
+
+          
+            <span class="post-meta">Posted on October 28, 2021</span>
+            
+            
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class=" container-md ">
+  <div class="row">
+    <div class=" col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 ">
+
+      
+
+      
+
+      <article role="main" class="blog-post">
+        <p>常常提及 CPU 和 GPU 但是大部分时候只是知道名词具体指向什么东西，但是对其中的概念和区别不是很了解，借着梳理渲染知识的机会重新整理整理学习。</p>
+
+<h2 id="区别">区别</h2>
+<ol>
+  <li>用途上的区别：CPU 被设计出来处理通用计算的核心部件，能处理很多复杂的任务和不同的数据结构；GPU 是专门针对制定类型的图形任务而设计的一种ASIC（专用集成电路）。一台计算机，只有 GPU 是不能运行的，但是只有 CPU 可以。</li>
+  <li>硬件模块之间的区别：CPU 运算能力特别强的 ALU。大的缓存用来降低访问数据的延时。有复杂的控制模块来分支预测。和对流水线中被前面指令过慢被后续指令依赖的数据做数据转发；GPU 的特点是有很多但计算能力不高的 ALU 。少量的缓存，目的是针对在众多线程中请求相同数据时，进行请求合并，然后再向 DRAM 请求数据并更新，在获取数据之后会转发到对应的线程中。 访问 DRAM 不可避免的会造成一定程度的延时。GPU的虽然有dram延时，却有非常多的ALU和非常多的thread. 为了平衡内存延时的问题，我们可以中充分利用多的ALU的特性达到一个非常大的吞吐量的效果。尽可能多的分配多的Threads.通常来看GPU ALU会有非常重的pipeline就是因为这样。</li>
+  <li><img src="/assets/img/2021-11-01-19-38-11.png" alt="" />
+从图上可以看出来，GPU 有特别多的计算单元，以及超长流水线，较为简单的控制模块和缓存。主要目的就是为了处理大量计算方式相似但是数据之间不相互依赖的任务，比如图像中的像素点。通常 CPU 可以处理 2D 的图像，但是复杂的 3D 图形计算，还是使用专门是设计用于此任务的 GPU 更为适合。同时 GPU 的并行计算架构也适合于密码破译，大数据处理，金融分析等领域。</li>
+  <li>CPU擅长逻辑控制，串行的运算。和通用类型数据运算不同，GPU擅长的是大规模并发计算，这也正是密码破解等所需要的。所以GPU除了图像处理，也越来越多的参与到计算当中来。</li>
+</ol>
+
+<h2 id="什么是-cpu">什么是 CPU</h2>
+<p>最为早期的 CPU 其实是针对固定大型应用被定制的。但是发展到现代，CPU 更多的是一种为了通用处理更多样任务而制造的。所以他有数量不多，但性能很强大的核心，用来处理计算任务。
+<img src="/assets/img/2021-10-28-18-30-13.png" alt="" /></p>
+
+<h2 id="什么是-gpu">什么是 GPU</h2>
+<p>GPU 是在 CPU 日益复杂的任务中发展出来的。某些芯片制造公司在发现 CPU 的任务之中，经常性的处理某些特定的任务（比如游戏渲染，密码破解等），针对这种场景专门设计了 GPU 的架构来优化相关任务的计算速度。
+<img src="/assets/img/2021-10-28-18-30-36.png" alt="" /></p>
+
+<h2 id="什么是数据转发">什么是数据转发</h2>
+<p>当一些指令依赖前面的指令结果时，数据转发的逻辑控制单元决定这些指令在pipeline中的位置并且尽可能快的转发一个指令的结果给后续的指令。这些动作需要很多的对比电路单元和转发电路单元。</p>
+
+<h2 id="什么类型的程序适合在gpu上运行">什么类型的程序适合在GPU上运行？</h2>
+
+<p>　　（1）计算密集型的程序。所谓计算密集型(Compute-intensive)的程序，就是其大部分运行时间花在了寄存器运算上，寄存器的速度和处理器的速度相当，从寄存器读写数据几乎没有延时。可以做一下对比，读内存的延迟大概是几百个时钟周期；读硬盘的速度就不说了，即便是SSD, 也实在是太慢了。</p>
+
+<p>　　（2）易于并行的程序。GPU其实是一种SIMD(Single Instruction Multiple Data)架构， 他有成百上千个核，每一个核在同一时间最好能做同样的事情。</p>
+
+<h2 id="参考">参考</h2>
+<ol>
+  <li>CPU和GPU的设计区别 https://www.cnblogs.com/biglucky/p/4223565.html</li>
+  <li>【Java深入学习系列】之CPU的分支预测(Branch Prediction)模型 https://segmentfault.com/a/1190000006889989</li>
+  <li>阿里程序员工作小技巧：理解 CPU 分支预测，提高代码效率 https://www.infoq.cn/article/g5vcecw7bp4rgxsru-j8</li>
+  <li>CPU、GPU、FPGA、ASIC芯片的对比 https://kknews.cc/tech/ngvlz45.html</li>
+</ol>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          <span>Tags:</span>
+          
+            <a href="/tags#CPU">CPU</a>
+          
+            <a href="/tags#GPU">GPU</a>
+          
+        </div>
+      
+
+      
+
+      
+        <!-- Check if any share-links are active -->
+
+
+
+
+
+      
+
+      <ul class="pagination blog-pager">
+        
+        
+        <li class="page-item next">
+          <a class="page-link" href="/2021-11-01-%E6%8C%87%E4%BB%A4%E6%B5%81%E6%B0%B4%E7%BA%BF/" data-toggle="tooltip" data-placement="top" title="指令流水线">Next Post &rarr;</a>
+        </li>
+        
+      </ul>
+      
+  
+  
+  
+
+  
+
+
+  
+
+
+
+    </div>
+  </div>
+</div>
+
+
+  <footer>
+  <div class="container-md beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1">
+      <ul class="list-inline text-center footer-links"><li class="list-inline-item">
+    <a href="mailto:liujingtech@gmail.com" title="Email me">
+      <span class="fa-stack fa-lg" aria-hidden="true">
+        <i class="fas fa-circle fa-stack-2x"></i>
+        <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+      </span>
+      <span class="sr-only">Email me</span>
+   </a>
+  </li><li class="list-inline-item">
+    <a href="https://github.com/liujingtech" title="GitHub">
+      <span class="fa-stack fa-lg" aria-hidden="true">
+        <i class="fas fa-circle fa-stack-2x"></i>
+        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+      <span class="sr-only">GitHub</span>
+   </a>
+  </li></ul>
+
+      
+      <p class="copyright text-muted">
+      
+        liujingtech
+        &nbsp;&bull;&nbsp;
+      
+      2021
+
+      
+        &nbsp;&bull;&nbsp;
+        <span class="author-site">
+          <a href="http://localhost:4000/">liujingtech.github.io</a>
+        </span>
+      
+
+      
+      </p>
+      <p class="theme-by text-muted">
+        Powered by
+        <a href="https://beautifuljekyll.com">Beautiful Jekyll</a>
+      </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  
+  
+    
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
+
+  
+    
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+
+  
+    
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+  
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script src="/assets/js/beautifuljekyll.js"></script>
+    
+  
+
+
+
+
+
+
+
+
+
+</body>
+</html>
