@@ -149,7 +149,7 @@
     var searchjson = '[ \
        \
         { \
-          "title"    : "Flutter 渲染流水线", \
+          "title"    : "（编辑中）Flutter 渲染流水线", \
           "category" : "Flutter渲染", \
           "url"      : "/2021-12-21-Flutter-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/", \
           "date"     : "December 21, 2021" \
@@ -265,15 +265,15 @@
       <article role="main" class="blog-post">
         <p>通常硬件加速就是指把某种特型计算工作交给的专门针对这部分计算而设计的硬件，比如把挖矿的运算给专门的挖矿的处理器，把游戏画面的渲染计算交给 GPU。在 Android 这里就是把 View 的绘制处理交给 GPU。换句话说，就是把 draw 到 canvas 上面的数据通过 GPU渲染管道 处理成像素点给屏幕。</p>
 
-<p><img src="source/img/2021-11-16-16-42-57.png" alt="" />
+<p><img src="/assets/img/2021-11-16-16-42-57.png" alt="" />
 https://developer.android.com/guide/topics/graphics/hardware-accel#controlling</p>
 
 <h2 id="android-绘制模型">Android 绘制模型</h2>
 <p>其实分为两个部分，基于软件的绘制模型和硬件加速绘制模型。
-<img src="source/img/2021-11-15-18-52-22.png" alt="" />
-<img src="source/img/2021-11-15-18-52-39.png" alt="" />
+<img src="/assets/img/2021-11-15-18-52-22.png" alt="" />
+<img src="/assets/img/2021-11-15-18-52-39.png" alt="" />
 他们相同的部分都是会对调用 view 的无效化处理（invalidation）的层次结构进行一次遍历（Traversal）。不同的是软件绘制时，对 invalidate 的 view 计算了大小和位置，得到了一个 Rect ，也就是一块需要重新被绘制的脏区域，如果这个区域有多个 view 被叠加，那么他们在这个 rect 中的部分会被重新绘制；硬件绘制是会先把 DisplayList 更新新的 view ，然后通过 DisplayList 的整体结构进行合并（比如两个 view 的部分有重合，会避免重复绘制下面被盖住的部分；比如在视图外的 view 不会被渲染）。
-<img src="source/img/2021-11-16-16-39-49.png" alt="" />
+<img src="/assets/img/2021-11-16-16-39-49.png" alt="" />
 https://blog.csdn.net/xiaosongluo/article/details/45070749</p>
 
 <table>
@@ -347,7 +347,7 @@ https://blog.csdn.net/xiaosongluo/article/details/45070749</p>
         
         
         <li class="page-item next">
-          <a class="page-link" href="/2021-12-21-Flutter-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/" data-toggle="tooltip" data-placement="top" title="Flutter 渲染流水线">Next Post &rarr;</a>
+          <a class="page-link" href="/2021-12-21-Flutter-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/" data-toggle="tooltip" data-placement="top" title="（编辑中）Flutter 渲染流水线">Next Post &rarr;</a>
         </li>
         
       </ul>
