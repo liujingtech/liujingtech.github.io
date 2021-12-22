@@ -9,7 +9,7 @@
 
   
 
-  <title>Android的硬件加速</title>
+  <title>Android 硬件加速</title>
 
   
   <meta name="author" content="liujingtech">
@@ -74,7 +74,7 @@
 
   
   <meta property="og:site_name" content="小刘的学习笔记">
-  <meta property="og:title" content="Android的硬件加速">
+  <meta property="og:title" content="Android 硬件加速">
   <meta property="og:description" content="通常硬件加速就是指把某种特型计算工作交给的专门针对这部分计算而设计的硬件，比如把挖矿的运算给专门的挖矿的处理器，把游戏画面的渲染计算交给 GPU。在 Android 这里就是把 View 的绘制处理交给 GPU。换句话说，就是把 draw 到 canvas 上面的数据通过 GPU渲染管道 处理成像素点给屏幕。 https://developer.android.com/guide/topics/graphics/hardware-accel#controlling Android 绘制模型 其实分为两个部分，基于软件的绘制模型和硬件加速绘制模型。 他们相同的部分都是会对调用 view 的无效化处理（invalidation）的层次结构进行一次遍历（Traversal）。不同的是软件绘制时，对 invalidate 的 view 计算了大小和位置，得到了一个 Rect ，也就是一块需要重新被绘制的脏区域，如果这个区域有多个 view 被叠加，那么他们在这个 rect 中的部分会被重新绘制；硬件绘制是会先把 DisplayList 更新新的 view ，然后通过 DisplayList 的整体结构进行合并（比如两个 view 的部分有重合，会避免重复绘制下面被盖住的部分；比如在视图外的 view 不会被渲染）。 https://blog.csdn.net/xiaosongluo/article/details/45070749 渲染场景 纯软件绘制 硬件加速 加速效果分析 页面初始化 绘制所有View 创建所有DisplayList GPU分担了复杂计算任务 在一个复杂页面调用背景透明TextView的setText()，且调用后其尺寸位置不变...">
 
   
@@ -83,8 +83,8 @@
   <meta property="og:type" content="article">
   <meta property="og:article:author" content="liujingtech">
   <meta property="og:article:published_time" content="2021-11-16T00:00:00+08:00">
-  <meta property="og:url" content="http://localhost:4000/2021-11-16-Android%E7%9A%84%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F/">
-  <link rel="canonical" href="http://localhost:4000/2021-11-16-Android%E7%9A%84%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F/">
+  <meta property="og:url" content="http://localhost:4000/2021-11-16-Android%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F/">
+  <link rel="canonical" href="http://localhost:4000/2021-11-16-Android%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F/">
   
 
   
@@ -93,7 +93,7 @@
   <meta name="twitter:site" content="@">
   <meta name="twitter:creator" content="@">
 
-  <meta property="twitter:title" content="Android的硬件加速">
+  <meta property="twitter:title" content="Android 硬件加速">
   <meta property="twitter:description" content="通常硬件加速就是指把某种特型计算工作交给的专门针对这部分计算而设计的硬件，比如把挖矿的运算给专门的挖矿的处理器，把游戏画面的渲染计算交给 GPU。在 Android 这里就是把 View 的绘制处理交给 GPU。换句话说，就是把 draw 到 canvas 上面的数据通过 GPU渲染管道 处理成像素点给屏幕。 https://developer.android.com/guide/topics/graphics/hardware-accel#controlling Android 绘制模型 其实分为两个部分，基于软件的绘制模型和硬件加速绘制模型。 他们相同的部分都是会对调用 view 的无效化处理（invalidation）的层次结构进行一次遍历（Traversal）。不同的是软件绘制时，对 invalidate 的 view 计算了大小和位置，得到了一个 Rect ，也就是一块需要重新被绘制的脏区域，如果这个区域有多个 view 被叠加，那么他们在这个 rect 中的部分会被重新绘制；硬件绘制是会先把 DisplayList 更新新的 view ，然后通过 DisplayList 的整体结构进行合并（比如两个 view 的部分有重合，会避免重复绘制下面被盖住的部分；比如在视图外的 view 不会被渲染）。 https://blog.csdn.net/xiaosongluo/article/details/45070749 渲染场景 纯软件绘制 硬件加速 加速效果分析 页面初始化 绘制所有View 创建所有DisplayList GPU分担了复杂计算任务 在一个复杂页面调用背景透明TextView的setText()，且调用后其尺寸位置不变...">
 
   
@@ -149,23 +149,23 @@
     var searchjson = '[ \
        \
         { \
-          "title"    : "（编辑中）Flutter 渲染流水线", \
+          "title"    : "（编辑中）Flutter的渲染流水线", \
           "category" : "Flutter渲染", \
-          "url"      : "/2021-12-21-Flutter-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/", \
+          "url"      : "/2021-12-21-Flutter%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/", \
           "date"     : "December 21, 2021" \
         }, \
        \
         { \
-          "title"    : "Android的硬件加速", \
+          "title"    : "Android 硬件加速", \
           "category" : "Android渲染", \
-          "url"      : "/2021-11-16-Android%E7%9A%84%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F/", \
+          "url"      : "/2021-11-16-Android%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F/", \
           "date"     : "November 16, 2021" \
         }, \
        \
         { \
           "title"    : "Android 渲染流程", \
           "category" : "渲染Android", \
-          "url"      : "/2021-11-15-Android-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/", \
+          "url"      : "/2021-11-15-Android%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/", \
           "date"     : "November 15, 2021" \
         }, \
        \
@@ -179,7 +179,7 @@
         { \
           "title"    : "CPU 和 GPU 的区别", \
           "category" : "CPUGPU", \
-          "url"      : "/2021-10-28-CPU-%E5%92%8C-GPU%E7%9A%84%E5%8C%BA%E5%88%AB/", \
+          "url"      : "/2021-10-28-CPU%E5%92%8CGPU%E7%9A%84%E5%8C%BA%E5%88%AB/", \
           "date"     : "October 28, 2021" \
         }, \
        \
@@ -235,7 +235,7 @@
     <div class="row">
       <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1">
         <div class="post-heading">
-          <h1>Android的硬件加速</h1>
+          <h1>Android 硬件加速</h1>
           
 
           
@@ -342,12 +342,12 @@ https://blog.csdn.net/xiaosongluo/article/details/45070749</p>
       <ul class="pagination blog-pager">
         
         <li class="page-item previous">
-          <a class="page-link" href="/2021-11-15-Android-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/" data-toggle="tooltip" data-placement="top" title="Android 渲染流程">&larr; Previous Post</a>
+          <a class="page-link" href="/2021-11-15-Android%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/" data-toggle="tooltip" data-placement="top" title="Android 渲染流程">&larr; Previous Post</a>
         </li>
         
         
         <li class="page-item next">
-          <a class="page-link" href="/2021-12-21-Flutter-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/" data-toggle="tooltip" data-placement="top" title="（编辑中）Flutter 渲染流水线">Next Post &rarr;</a>
+          <a class="page-link" href="/2021-12-21-Flutter%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/" data-toggle="tooltip" data-placement="top" title="（编辑中）Flutter的渲染流水线">Next Post &rarr;</a>
         </li>
         
       </ul>
