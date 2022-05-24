@@ -4,6 +4,7 @@ title: 想开一个桌面级 ASoul 的 live2d 的 electron 项目
 # subtitle: https://github.com/liujingtech/ASoulPetDesktop
 tags: [ASoul,live2d,electron]
 comments: true
+cover-img: "/assets/img/2022-05-25-02-24-49.png"
 ---
 
 > 最近在看资料的时候发现有个 web 版本的 live2d ，感觉很有意思。试了一下，把代码移植到了 electron 上面做了个实验性的桌面版本：https://github.com/liujingtech/ASoulPetDesktop
@@ -16,7 +17,7 @@ comments: true
 ## TODO
 1. 通过爬虫捕获 ASoul 成员新的文字动态，并通过 Live2D 的台词/系统推送展示。(最想做的)
 2. 开机自启动。()
-3. 窗口置顶。
+3. 窗口置顶。!
 4. 托盘以及托盘菜单配置以上的功能。
 5. 以及其他主要能增强陪伴感的功能。
 6. github.io的个人站点应该也可以添加web版本的。
