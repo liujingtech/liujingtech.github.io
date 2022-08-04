@@ -14,15 +14,25 @@
 </head>
 
 <body>
-
-    <h2>图一乐，别太当真</h2>
+    <h2>图一乐，别当真</h2>
+    </p>
+    <label>已有车辆勾选，不进行计算</label>
     </br>
+    <input type="checkbox" name="tank_checkbox" value="0">乌达尼</input>
+    <input type="checkbox" name="tank_checkbox" value="1">WZ113-II</input>
+    <input type="checkbox" name="tank_checkbox" value="2">KV-4 KTTS</input>
+    </br>
+    <input type="checkbox" name="tank_checkbox" value="3">TL-1 LPC</input>
+    <input type="checkbox" name="tank_checkbox" value="4">索玛 SM</input>
+    <input type="checkbox" name="tank_checkbox" value="5">112TM</input>
+    <input type="checkbox" name="tank_checkbox" value="6">兰森 C</input>
+    <input type="checkbox" name="tank_checkbox" value="7">E 75 TS</input>
+    <input type="checkbox" name="tank_checkbox" value="8">洛林 40t</input>
+    </p>
     <button onclick="gen3()">再来1次</button>
     <button onclick="gen11()">再来10次</button>
     <button onclick="gen25()">再来35次</button>
-    <button onclick="init()">重来</button>
-
-
+    <button onclick="location.reload()">重来</button>
 
     <p id="demo"></p>
     <font size=1 color=grey id="lastMod">当前文件最后更新时间</font>
@@ -102,9 +112,11 @@
         ];
 
         var class1_tank_price_arr = [
-            0, 0, 0];
+            0, 0, 0
+        ];
         var class2_tank_price_arr = [
-            0, 0, 0, 0, 0, 0];
+            0, 0, 0, 0, 0, 0
+        ];
 
 
         var result_str = "";
@@ -151,7 +163,23 @@
             return null;
         };
 
+        function init() {
+            check_val = [];
+            obj = document.getElementsByName("tank_checkbox");
+            for (k in obj) {
+                if (obj[k].checked) {
+                    console.log("k checked:" + k + " lv4_class1_name_arr.length:" + lv4_class1_name_arr.length + " obj[k].value:" + obj[k].value);
+                    if (k < lv4_class1_name_arr.length) {
+                        class1_tank_had.add(parseInt(obj[k].value));
+                    } else {
+                        class2_tank_had.add(parseInt(obj[k].value));
+                    }
+                }
+            }
+        }
+
         function gen3() {
+            init()
             rmb += 8;
             vipDay += 1;
             for (i = 0; i < 1; i++) {
@@ -160,6 +188,7 @@
             genText();
         }
         function gen11() {
+            init()
             rmb += 76;
             vipDay += 10;
             for (i = 0; i < 10; i++) {
@@ -168,6 +197,7 @@
             genText();
         }
         function gen25() {
+            init()
             rmb += 252;
             vipDay += 35;
             for (i = 0; i < 35; i++) {
@@ -176,6 +206,7 @@
             }
             genText();
         }
+
         function genText() {
             var last_baodi = baodi_max - baodi_count;
             document.getElementById("demo").innerHTML = "<\p> 总抽取次数：" + count
@@ -191,9 +222,7 @@
                 + "<\p> <details><summary>明细</summary>" + result_str + "</details>"
                 ;
         }
-        function init() {
-            location.reload();
-        }
+
         function gen() {
             count += 1;//总抽取次数
             baodi_count += 1;//每次都加一，8金抽到就归零
