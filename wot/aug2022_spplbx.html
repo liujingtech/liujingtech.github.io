@@ -43,7 +43,7 @@
         如果你保底数低于25抽，可以考虑是否加25抽箱子。因为，吃保底最差的金币车收益是8450金币（8450/40=211.25元）。25抽的箱子自带2750金币，同时算上最差的保底车的金币价值8450，再除以40，是280rmb。已知，25抽250块钱，所以如果25抽最差预期是赚30rmb（不过我用的比例1:40是日常金币价格，肯定不如节日期间的价格比例）
     </details>
     <details>
-        <summary>另一个友情提示</summary>虚拟道具始终都是存在数据库里的数据而已，算来算去这世界只有马化腾亏了。<b>游戏只是为了娱乐，大家要好好吃饭。</b>水母 爱心 水母
+        <summary>另一个友情提示</summary>虚拟道具始终都是存在数据库里的数据而已，算来算去这世界只有马化腾亏了。<b>游戏只是为了娱乐，大家要好好吃饭。</b>关注嘉然顿顿解馋
     </details>
     </p>
     <a href="../wot/2022xmas.html">外服版本开箱模拟器</a> |
@@ -70,7 +70,7 @@
         ];
 
         var lv3_name_arr = [
-            "2d皮肤", "2d皮肤", "2d皮肤", "2d皮肤", "2d皮肤", "2d皮肤", "2d皮肤", "2d皮肤", "2d皮肤", "2d皮肤"
+            "黑色星期五2D风格", "黑色大理石2D风格", "眩纹2D风格", "多样性2D风格", "后羿的荣耀2D风格", "金牛贺岁2D风格", "赏月2D风格", "浪潮 2D风格", "水晶石2D风格", "漫天飞舞2D风格"
         ];
 
         var lv4_name_arr = [
@@ -108,6 +108,8 @@
 
 
         var result_str = "";
+        var html_2d_count = 0;
+        var html_2d_name = "";
         var vipDay = 0;
         var xiangzi_vip = 0;
         var jiangli_vip = 0;
@@ -185,6 +187,7 @@
                 // + "<\p> 总银币：" + yinbi + " = 自带" + xiangzi_yinbi + "银币 + 开箱" + jiangli_yinbi + "银币"
                 + "<\p> 第1组的坦克（抽到" + lv4_class1_count + "台：" + class1_tank
                 + "<\p> 第2组的坦克（抽到" + lv4_class2_count + "台：" + class2_tank
+                + "<\p> 2d皮肤（抽到" + html_2d_count + "个：" + html_2d_name
                 + "<\p> <details><summary>明细</summary>" + result_str + "</details>"
                 ;
         }
@@ -290,18 +293,8 @@
 
         function calcWhatInBox3(box) {
             var position = box.position
-            if (position < 3) {
-                vipDay += position == 0 ? 1 : position == 1 ? 3 : 7;
-                jiangli_vip += position == 0 ? 1 : position == 1 ? 3 : 7;
-            }
-            if (position >= 3 && position < 6) {
-                jinbi += position == 3 ? 250 : position == 4 ? 500 : 100;
-                jiangli_jinbi += position == 3 ? 250 : position == 4 ? 500 : 100;
-            }
-            if (position >= 6 && position < 8) {
-                yinbi += position == 6 ? 10000 : 500000;
-                jiangli_yinbi += position == 6 ? 10000 : 500000;
-            }
+            html_2d_count += 1
+            html_2d_name += box.name + ","
             return box;
         }
 
