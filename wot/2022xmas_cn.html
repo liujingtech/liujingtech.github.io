@@ -17,11 +17,25 @@
 
     <h2>2022冬季箱子模拟器————这版本目前不开3D皮肤和猫的概率，发出来图一乐</h2>
     </br>
+    <label>已有车辆勾选，不进行计算</label>
+    </br>
+    <input type="checkbox" name="tank_checkbox" value="8">38H735(f)</input>
+    <input type="checkbox" name="tank_checkbox" value="9">M3 斯图亚特L</input>
+    <input type="checkbox" name="tank_checkbox" value="10">A25 H.H. I</input>
+    <input type="checkbox" name="tank_checkbox" value="11">KW I (r)</input>
+    <input type="checkbox" name="tank_checkbox" value="12">SU-2-122</input>
+    </br>
+    <input type="checkbox" name="tank_checkbox" value="13">M47钢铁阿诺</input>
+    <input type="checkbox" name="tank_checkbox" value="14">夏尔75</input>
+    <input type="checkbox" name="tank_checkbox" value="15">BZ-176</input>
+    <input type="checkbox" name="tank_checkbox" value="16">蝰蛇</input>
+    <input type="checkbox" name="tank_checkbox" value="17">AMBT</input>
+    </p>
     <button onclick="gen3()">再来3次</button>
     <button onclick="gen11()">再来11次</button>
     <button onclick="gen25()">再来25次</button>
     <button onclick="gen75()">再来75次</button>
-    <button onclick="init()">重来</button>
+    <button onclick="location.reload()">重来</button>
 
 
 
@@ -44,7 +58,8 @@
         如果你保底数低于25抽，可以考虑是否加25抽箱子。因为，吃保底最差的金币车收益是8450金币（8450/40=211.25元）。25抽的箱子自带2750金币，同时算上最差的保底车的金币价值8450，再除以40，是280rmb。已知，25抽250块钱，所以如果25抽最差预期是赚30rmb（不过我用的比例1:40是日常金币价格，肯定不如节日期间的价格比例）
     </details>
     <details>
-        <summary><a href="https://t.bilibili.com/731220926796922901">B站预约参与抽奖</a></summary>预约【A-SOUL二周年纪念直播】即有机会获得惊喜奖品：【零跑T03 2年使用权×1】、【PICO 4 256G×2】、【1211元现金红包×3】~
+        <summary><a href="https://t.bilibili.com/731220926796922901">B站预约参与抽奖</a></summary>
+        预约【A-SOUL二周年纪念直播】即有机会获得惊喜奖品：【零跑T03 2年使用权×1】、【PICO 4 256G×2】、【1211元现金红包×3】~
     </details>
     </p>
     <a href="../wot/2022xmas.html">外服版本开箱模拟器</a> |
@@ -95,27 +110,47 @@
         var lv_8_tank = "";
         let lv_8_tank_had_car = new Set();
 
-        function random(nameArray, gailvArray) {
-            var sum = 0,
-                factor = 0,
-                random = Math.random();
+        function getBoxFormRandom(name, probability) {
+            var max = 0,//最大命中概率
+                qujian = 0,//命中区间
+                mingzhong = Math.random();
 
-            for (var i = gailvArray.length - 1; i >= 0; i--) {
-                sum += gailvArray[i]; // 统计概率总和
+            for (var i = probability.length - 1; i >= 0; i--) {
+                max += probability[i]; // 统计概率总和
             };
-            // if (sum != 1) {//测试用,不为1就出错了
-            //     console.log("sum:" + sum + " random:" + random);
-            // }
-            random *= sum; // 随机生成命中数
-            for (var i = gailvArray.length - 1; i >= 0; i--) {
-                factor += gailvArray[i];//每次累加概率
-                if (random <= factor)//随机生成数比当前应该累加概率低
-                    return { name: nameArray[i], position: i };
+            if (mingzhong > max) {//没有命中任何东西
+                console.log("没有命中任何东西 max:" + max + " random:" + mingzhong);
+                return null;
+            }
+            for (var i = probability.length - 1; i >= 0; i--) {
+                qujian += probability[i];
+                if (mingzhong <= qujian) {
+                    console.log("命中:" + name[i]);
+                    // console.log("命中:" + name[i] + " 区间:" + qujian + " 位置:" + i + " mingzhong:" + mingzhong);
+                    return { name: name[i], position: i };
+                }
             };
+            console.log("走到这里就异常了:");
+            console.log("name:" + JSON.stringify(name) + " probability:" + probability + " mingzhong:" + mingzhong + " qujian:" + qujian + " max:" + max);
             return null;
         };
 
+        function getCheckBoxValue() {
+            check_val = [];
+            obj = document.getElementsByName("tank_checkbox");
+            for (k in obj) {
+                if (obj[k].checked) {
+                    if (k => 13) {//8-9级车
+                        lv_8_tank_had_car.add(parseInt(obj[k].value));
+                    } else {
+                        lv_2_to_5_tank_had_car.add(parseInt(obj[k].value));
+                    }
+                }
+            }
+        }
+
         function gen3() {
+            getCheckBoxValue()
             rmb += 38;
             jinbi += 750;
             xiangzi_jinbi += 750;
@@ -127,6 +162,7 @@
             genText();
         }
         function gen11() {
+            getCheckBoxValue()
             rmb += 125;
             jinbi += 2750;
             xiangzi_jinbi += 2750;
@@ -138,6 +174,7 @@
             genText();
         }
         function gen25() {
+            getCheckBoxValue()
             rmb += 250;
             jinbi += 6250;
             xiangzi_jinbi += 6250;
@@ -149,6 +186,7 @@
             genText();
         }
         function gen75() {
+            getCheckBoxValue()
             rmb += 625;
             jinbi += 18750;
             xiangzi_jinbi += 18750;
@@ -173,9 +211,7 @@
                 + "<\p> <details><summary>明细</summary>" + result_str + "</details>"
                 ;
         }
-        function init() {
-            location.reload();
-        }
+
         function helloWorld(count) {
             //常量 各礼物中奖率
             const bingoRate = [
@@ -204,15 +240,15 @@
         function gen() {
             count += 1;
             baodi_count += 1;//每次都加一，8金抽到就归零
-            
+
             var result;
             console.log(baodi_count);
             if (baodi_count != 50) {
-                result = random(jiangpin_normal, jiangpin_normal_gailv);
+                result = getBoxFormRandom(jiangpin_normal, jiangpin_normal_gailv);
             } else {
                 baodi_count_sum++;//全局统计总保底次数
 
-                result = random(jiangpin_normal, jiangpin_baodi_gailv)
+                result = getBoxFormRandom(jiangpin_normal, jiangpin_baodi_gailv)
                 if (result != null) {
                     console.log(baodi_count + " " + result.name + " " + result.position);
                 } else {
@@ -241,7 +277,7 @@
             if (position >= 8 && position < 13) {
                 if (lv_2_to_5_tank_had_car.has(position)) {//已经抽到过
                     if (lv_2_to_5_tank_had_car.size < 5) {
-                        result = random(jiangpin_normal, [
+                        result = getBoxFormRandom(jiangpin_normal, [
                             0, 0, 0, 0, 0, 0, 0, 0,
                             lv_2_to_5_tank_had_car.has(8) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
                             lv_2_to_5_tank_had_car.has(9) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
@@ -269,7 +305,7 @@
             if (position >= 13) {//8级车
                 if (lv_8_tank_had_car.has(position)) {//已经抽到过
                     if (lv_8_tank_had_car.size < 5) {
-                        result = random(jiangpin_normal, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                        result = getBoxFormRandom(jiangpin_normal, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             lv_8_tank_had_car.has(13) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
                             lv_8_tank_had_car.has(14) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
                             lv_8_tank_had_car.has(15) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
