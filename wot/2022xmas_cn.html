@@ -35,6 +35,11 @@
     <button onclick="gen11()">再来11次</button>
     <button onclick="gen25()">再来25次</button>
     <button onclick="gen75()">再来75次</button>
+    </br>
+    <button onclick="gen12()">再来12次</button>
+    <button onclick="gen28()">再来28次</button>
+    <button onclick="gen80()">再来80次</button>
+    <button onclick="gen200()">再来200次</button>
     <button onclick="location.reload()">重来</button>
 
 
@@ -58,7 +63,7 @@
         如果你保底数低于25抽，可以考虑是否加25抽箱子。因为，吃保底最差的金币车收益是8450金币（8450/40=211.25元）。25抽的箱子自带2750金币，同时算上最差的保底车的金币价值8450，再除以40，是280rmb。已知，25抽250块钱，所以如果25抽最差预期是赚30rmb（不过我用的比例1:40是日常金币价格，肯定不如节日期间的价格比例）
     </details>
     <details>
-        <summary><a href="https://t.bilibili.com/731220926796922901">B站预约参与抽奖</a></summary>
+        <summary><a href="https://t.bilibili.com/731220926796922901">B站预约参与抽奖：12月11日晚上8点，@嘉然今天吃什么 直播间，A-SOUL二周年纪念直播！时光无涯，你我共同奔赴~</a></summary>
         预约【A-SOUL二周年纪念直播】即有机会获得惊喜奖品：【零跑T03 2年使用权×1】、【PICO 4 256G×2】、【1211元现金红包×3】~
     </details>
     </p>
@@ -197,6 +202,54 @@
             }
             genText();
         }
+        function gen12() {
+            getCheckBoxValue()
+            rmb += 135;
+            jinbi += 3000;
+            xiangzi_jinbi += 3000;
+            vipDay += 12;
+            xiangzi_vip += 12;
+            for (i = 0; i < 12; i++) {
+                gen();
+            }
+            genText();
+        }
+        function gen28() {
+            getCheckBoxValue()
+            rmb += 280;
+            jinbi += 7000;
+            xiangzi_jinbi += 7000;
+            vipDay += 28;
+            xiangzi_vip += 28;
+            for (i = 0; i < 28; i++) {
+                gen();
+            }
+            genText();
+        }
+        function gen80() {
+            getCheckBoxValue()
+            rmb += 670;
+            jinbi += 20000;
+            xiangzi_jinbi += 20000;
+            vipDay += 80;
+            xiangzi_vip += 80;
+            for (i = 0; i < 75; i++) {
+                gen();
+            }
+            genText();
+        }
+        function gen200() {
+            getCheckBoxValue()
+            rmb += 1500;
+            jinbi += 50000;
+            xiangzi_jinbi += 50000;
+            vipDay += 200;
+            xiangzi_vip += 200;
+            for (i = 0; i < 200; i++) {
+                gen();
+            }
+            genText();
+        }
         function genText() {
             var last_baodi = 50 - baodi_count;
             document.getElementById("demo").innerHTML = "<\p> 总抽取次数：" + count
@@ -206,8 +259,8 @@
                 + "<\p> 总vip天数：" + vipDay + "天 = 箱子自带" + xiangzi_vip + "天 + 开箱出" + jiangli_vip + "天"
                 + "<\p> 总金币：" + jinbi + " = 箱子自带" + xiangzi_jinbi + "金币 + 开箱出" + jiangli_jinbi + "金币"
                 + "<\p> 总银币：" + yinbi + " = 箱子自带" + xiangzi_yinbi + "银币 + 开箱出" + jiangli_yinbi + "银币"
-                + "<\p> II–V级坦克（抽到" + car_lv2_5_count + "台，期望出货" + (count * 0.1166).toFixed(1) + "台）：" + lv_2_to_5_tank
-                + "<\p> VIII或IX级金币坦克（抽到" + car_lv8_count + "台,期望出货" + ((count * 0.024) + baodi_count_sum).toFixed(1) + "台）：" + lv_8_tank
+                + "<\p> II–V级坦克（抽到" + car_lv2_5_count + "台，标准概率应该出货" + (count * 0.1166).toFixed(1) + "台）：" + lv_2_to_5_tank
+                + "<\p> VIII或IX级金币坦克（抽到" + car_lv8_count + "台，标准概率应该出货" + ((count * 0.024) + baodi_count_sum).toFixed(1) + "台）：" + lv_8_tank
                 + "<\p> <details><summary>明细</summary>" + result_str + "</details>"
                 ;
         }
