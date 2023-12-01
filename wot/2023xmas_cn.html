@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?c604f4f438128bdc8ff70d5f1a075261";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+</head>
+
+<body>
+    <h2>坦克世界箱子模拟器2023假日行动————这版本目前不开3D皮肤和猫的概率，发出来图一乐</h2>
+    </br>
+    <label>已有车辆勾选，不进行抽奖</label>
+    </br>
+    <input type="checkbox" name="tank_checkbox" value="8">维克斯6吨型</input>
+    <input type="checkbox" name="tank_checkbox" value="9">A7E3</input>
+    <input type="checkbox" name="tank_checkbox" value="10">IT-3</input>
+    <input type="checkbox" name="tank_checkbox" value="11">M24"霞飞"594号</input>
+    <input type="checkbox" name="tank_checkbox" value="12">ARMT</input>
+    </br>
+    <input type="checkbox" name="tank_checkbox" value="13">"虎鼠"式</input>
+    <input type="checkbox" name="tank_checkbox" value="14">752工程</input>
+    <input type="checkbox" name="tank_checkbox" value="15">六三式</input>
+    <input type="checkbox" name="tank_checkbox" value="16">XM66F</input>
+    <input type="checkbox" name="tank_checkbox" value="17">GSOR 1010 FB</input>
+    </p>
+    <button onclick="gen3()">再来3次</button>
+    <button onclick="gen11()">再来11次</button>
+    <button onclick="gen25()">再来25次</button>
+    <button onclick="gen75()">再来75次</button>
+    </br>
+    <button onclick="gen12()">再来12次</button>
+    <button onclick="gen28()">再来28次</button>
+    <button onclick="gen80()">再来80次</button>
+    <button onclick="gen160()">再来160次</button>
+    <button onclick="gen240()">再来240次</button>
+    <button onclick="location.reload()">重来</button>
+
+
+
+    <p id="demo"></p>
+    <font size=1 color=grey id="lastMod">当前文件最后更新时间</font>
+    </p>
+    <details>
+        <summary>大致实现逻辑</summary>
+        箱子种类有对应的vip天数和金币数。同时，100%获得一个装饰品（独立获得），vip、银币、金币（掉落率：85.94%）/2-5级车（掉落率：11.66%）/8级车（掉落率：2.4%）中3选一（3种概率加一起100%），5%概率的皮肤（独立获得）。并且，在新车没有全获得的情况下，优先获得新车。之后，重复获得的车转换成金币。
+        </p>
+        分别把具体的金银币vip的单项给平均分配到85.94%内，依照如此分配2-5级车和8级车，并将概率连续相加，获得命中区间。
+        </br>
+        比如，获得250/500/1000金币的概率都是0.107425，那么获得区间0-0.107425,0.107425-0.21485,0.21485-0.322275。每次抽取时获取1个随机数，和上面的区间进行匹配，如果在区间内，那么命中该物品并进行统计。
+        </p>
+        获取车的方式稍微复杂一些，除了命中0.8594-0.9760（2-5级），0.9760-1（8金）以外，需要判断是否已拥有此车，并且判断同类型（2-5级一个类型，8级一个类型）新车是否全部获取。如果没有全部获取，那么从剩下的车里面平均分配区间，并再次生成随机数，进行区间匹配。如果已经全部获取，那么直接计算匹配到的车的金币价格，并加入统计。
+        </p>
+    </details>
+    <details>
+        <summary>友情提示</summary>
+        如果你保底数低于25抽，可以考虑是否加25抽箱子。因为，吃保底最差的金币车收益是8450金币（8450/40=211.25元）。25抽的箱子自带2750金币，同时算上最差的保底车的金币价值8450，再除以40，是280rmb。已知，25抽250块钱，所以如果25抽最差预期是赚30rmb（不过我用的比例1:40是日常金币价格，肯定不如节日期间的价格比例）
+    </details>
+<!--    <details>-->
+<!--        <summary><a href="https://t.bilibili.com/731220926796922901">B站预约参与抽奖：12月11日晚上8点，@嘉然今天吃什么 直播间，A-SOUL二周年纪念直播！时光无涯，你我共同奔赴~</a></summary>-->
+<!--        预约【A-SOUL二周年纪念直播】即有机会获得惊喜奖品：【零跑T03 2年使用权×1】、【PICO 4 256G×2】、【1211元现金红包×3】~-->
+<!--    </details>-->
+    </p>
+<!--    <a href="../wot/2022xmas.html">外服版本开箱模拟器</a> |-->
+    <a href="https://github.com/liujingtech/liujingtech.github.io"><img
+            src="https://img.shields.io/github/forks/liujingtech/liujingtech.github.io?style=social"></a>
+    <a href="https://github.com/liujingtech/liujingtech.github.io"><img
+            src="https://img.shields.io/github/stars/liujingtech/liujingtech.github.io?style=social"></a>
+    <script>
+
+        document.getElementById("lastMod").innerHTML = "最后修改时间：" + document.lastModified;
+
+        var rmb = 0;
+        var count = 0;//抽取次数
+        var baodi_count = 0;//抽了多少没有8金
+        var car_lv2_5_count = 0;
+        var car_lv8_count = 0;
+        var baodi_count_sum = 0;
+        var jiangpin_normal = [
+            "1天坦克世界高级账号", "3天坦克世界高级账号", "7天坦克世界高级账号", "250金币", "500金币", "1000金币", "100000银币", "500000银币",
+            "维克斯6吨型", "A7E3", "IT-3", "M24霞飞594号", "ARMT",
+            "虎鼠式", "752工程", "六三式", "XM66F", "GSOR 1010 FB"
+        ];
+        var jiangpin_normal_gailv = [
+            0.107425, 0.107425, 0.107425, 0.107425, 0.107425, 0.107425, 0.107425, 0.107425,
+            0.02332, 0.02332, 0.02332, 0.02332, 0.02332,
+            0.0048, 0.0048, 0.0048, 0.0048, 0.0048];
+        var jiangpin_baodi_gailv = [
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0.2, 0.2, 0.2, 0.2, 0.2];
+        var jiangpin_jinbi = [
+            0, 0, 0, 0, 0, 0, 0, 0,
+            750, 850, 1000, 1500, 1500,
+            9100, 9900, 9500, 9950, 9850];
+
+        var result_str = "";
+        var vipDay = 0;
+        var xiangzi_vip = 0;
+        var jiangli_vip = 0;
+        var jinbi = 0;
+        var jiangli_jinbi = 0;
+        var xiangzi_jinbi = 0;
+        var yinbi = 0;
+        var xiangzi_yinbi = 0;
+        var jiangli_yinbi = 0;
+        var lv_2_to_5_tank = "";
+        let lv_2_to_5_tank_had_car = new Set();
+        var lv_8_tank = "";
+        let lv_8_tank_had_car = new Set();
+
+        function getBoxFormRandom(name, probability) {
+            var max = 0,//最大命中概率
+                qujian = 0,//命中区间
+                mingzhong = Math.random();
+
+            for (var i = probability.length - 1; i >= 0; i--) {
+                max += probability[i]; // 统计概率总和
+            };
+            if (mingzhong > max) {//没有命中任何东西
+                console.log("没有命中任何东西 max:" + max + " random:" + mingzhong);
+                return null;
+            }
+            for (var i = probability.length - 1; i >= 0; i--) {
+                qujian += probability[i];
+                if (mingzhong <= qujian) {
+                    console.log("命中:" + name[i]);
+                    // console.log("命中:" + name[i] + " 区间:" + qujian + " 位置:" + i + " mingzhong:" + mingzhong);
+                    return { name: name[i], position: i };
+                }
+            };
+            console.log("走到这里就异常了:");
+            console.log("name:" + JSON.stringify(name) + " probability:" + probability + " mingzhong:" + mingzhong + " qujian:" + qujian + " max:" + max);
+            return null;
+        };
+
+        function getCheckBoxValue() {
+            check_val = [];
+            obj = document.getElementsByName("tank_checkbox");
+            for (k in obj) {
+                if (obj[k].checked) {
+                    if (k => 13) {//8-9级车
+                        lv_8_tank_had_car.add(parseInt(obj[k].value));
+                    } else {
+                        lv_2_to_5_tank_had_car.add(parseInt(obj[k].value));
+                    }
+                }
+            }
+        }
+
+        function gen3() {
+            getCheckBoxValue()
+            rmb += 38;
+            jinbi += 750;
+            xiangzi_jinbi += 750;
+            vipDay += 3;
+            xiangzi_vip += 3;
+            for (i = 0; i < 3; i++) {
+                gen();
+            }
+            genText();
+        }
+        function gen11() {
+            getCheckBoxValue()
+            rmb += 125;
+            jinbi += 2750;
+            xiangzi_jinbi += 2750;
+            vipDay += 11;
+            xiangzi_vip += 11;
+            for (i = 0; i < 11; i++) {
+                gen();
+            }
+            genText();
+        }
+        function gen25() {
+            getCheckBoxValue()
+            rmb += 250;
+            jinbi += 6250;
+            xiangzi_jinbi += 6250;
+            vipDay += 25;
+            xiangzi_vip += 25;
+            for (i = 0; i < 25; i++) {
+                gen();
+            }
+            genText();
+        }
+        function gen75() {
+            getCheckBoxValue()
+            rmb += 625;
+            jinbi += 18750;
+            xiangzi_jinbi += 18750;
+            vipDay += 75;
+            xiangzi_vip += 75;
+            for (i = 0; i < 75; i++) {
+                gen();
+            }
+            genText();
+        }
+        function gen12() {
+            getCheckBoxValue()
+            rmb += 135;
+            jinbi += 3000;
+            xiangzi_jinbi += 3000;
+            vipDay += 12;
+            xiangzi_vip += 12;
+            for (i = 0; i < 12; i++) {
+                gen();
+            }
+            genText();
+        }
+        function gen28() {
+            getCheckBoxValue()
+            rmb += 280;
+            jinbi += 7000;
+            xiangzi_jinbi += 7000;
+            vipDay += 28;
+            xiangzi_vip += 28;
+            for (i = 0; i < 28; i++) {
+                gen();
+            }
+            genText();
+        }
+        function gen80() {
+            getCheckBoxValue()
+            rmb += 670;
+            jinbi += 20000;
+            xiangzi_jinbi += 20000;
+            vipDay += 80;
+            xiangzi_vip += 80;
+            for (i = 0; i < 75; i++) {
+                gen();
+            }
+            genText();
+        }
+        function gen160() {
+            getCheckBoxValue()
+            rmb += 1500;
+            jinbi += 40000;
+            xiangzi_jinbi += 40000;
+            vipDay += 160;
+            xiangzi_vip += 160;
+            for (i = 0; i < 160; i++) {
+                gen();
+            }
+            genText();
+        }
+        function gen240() {
+            getCheckBoxValue()
+            rmb += 1500;
+            jinbi += 60000;
+            xiangzi_jinbi += 60000;
+            vipDay += 240;
+            xiangzi_vip += 240;
+            for (i = 0; i < 240; i++) {
+                gen();
+            }
+            genText();
+        }
+        function genText() {
+            var last_baodi = 50 - baodi_count;
+            document.getElementById("demo").innerHTML = "<\p> 总抽取次数：" + count
+                + "<\p> 总花费rmb：" + "<b>" + rmb + "</b>"
+                + "<\p> 距离下一次保底：" + last_baodi
+                + "<\p> 总吃过保底的次数：" + (baodi_count_sum)
+                + "<\p> 总vip天数：" + vipDay + "天 = 箱子自带" + xiangzi_vip + "天 + 开箱出" + jiangli_vip + "天"
+                + "<\p> 总金币：" + jinbi + " = 箱子自带" + xiangzi_jinbi + "金币 + 开箱出" + jiangli_jinbi + "金币"
+                + "<\p> 总银币：" + yinbi + " = 箱子自带" + xiangzi_yinbi + "银币 + 开箱出" + jiangli_yinbi + "银币"
+                + "<\p> II–V级坦克（抽到" + car_lv2_5_count + "台，标准概率应该出货" + (count * 0.1166).toFixed(1) + "台）：" + lv_2_to_5_tank
+                + "<\p> VIII或IX级金币坦克（抽到" + car_lv8_count + "台，标准概率应该出货" + ((count * 0.024) + baodi_count_sum).toFixed(1) + "台）：" + lv_8_tank
+                + "<\p> <details><summary>明细</summary>" + result_str + "</details>"
+                ;
+        }
+
+        function gen() {
+            count += 1;
+            baodi_count += 1;//每次都加一，8金抽到就归零
+
+            var result;
+            console.log(baodi_count);
+            if (baodi_count != 50) {
+                result = getBoxFormRandom(jiangpin_normal, jiangpin_normal_gailv);
+            } else {
+                baodi_count_sum++;//全局统计总保底次数
+
+                result = getBoxFormRandom(jiangpin_normal, jiangpin_baodi_gailv)
+                if (result != null) {
+                    console.log(baodi_count + " " + result.name + " " + result.position);
+                } else {
+                    return;
+                }
+            }
+            if (result != null) {
+                calc(result);
+            }
+            result_str += result.name + " ";//
+        }
+        function calc(result) {
+            var position = result.position
+            if (position < 3) {
+                vipDay += position == 0 ? 1 : position == 1 ? 3 : 7;
+                jiangli_vip += position == 0 ? 1 : position == 1 ? 3 : 7;
+            }
+            if (position >= 3 && position < 6) {
+                jinbi += position == 3 ? 250 : position == 4 ? 500 : 100;
+                jiangli_jinbi += position == 3 ? 250 : position == 4 ? 500 : 100;
+            }
+            if (position >= 6 && position < 8) {
+                yinbi += position == 6 ? 10000 : 500000;
+                jiangli_yinbi += position == 6 ? 10000 : 500000;
+            }
+            if (position >= 8 && position < 13) {
+                if (lv_2_to_5_tank_had_car.has(position)) {//已经抽到过
+                    if (lv_2_to_5_tank_had_car.size < 5) {
+                        result = getBoxFormRandom(jiangpin_normal, [
+                            0, 0, 0, 0, 0, 0, 0, 0,
+                            lv_2_to_5_tank_had_car.has(8) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
+                            lv_2_to_5_tank_had_car.has(9) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
+                            lv_2_to_5_tank_had_car.has(10) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
+                            lv_2_to_5_tank_had_car.has(11) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
+                            lv_2_to_5_tank_had_car.has(12) ? 0 : 1 / (5 - lv_2_to_5_tank_had_car.size),
+                            0, 0, 0, 0, 0]);
+                        if (result != null) {
+                            calc(result);
+                        }
+                        return;
+                    }
+                    lv_2_to_5_tank += result.name + "(+" + jiangpin_jinbi[position] + "金币),";
+                    jinbi += jiangpin_jinbi[position];
+                    jiangli_jinbi += jiangpin_jinbi[position];
+                    car_lv2_5_count++;
+                } else {
+                    lv_2_to_5_tank += "<font color=red>" + result.name + "</font>,";
+                    lv_2_to_5_tank_had_car.add(position);
+                    car_lv2_5_count++;
+                }
+                // console.log(lv_2_to_5_tank_had_car);
+                lv_2_to_5_tank.substring(0, lv_2_to_5_tank.length - 1);
+            }
+            if (position >= 13) {//8级车
+                if (lv_8_tank_had_car.has(position)) {//已经抽到过
+                    if (lv_8_tank_had_car.size < 5) {
+                        result = getBoxFormRandom(jiangpin_normal, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            lv_8_tank_had_car.has(13) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
+                            lv_8_tank_had_car.has(14) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
+                            lv_8_tank_had_car.has(15) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
+                            lv_8_tank_had_car.has(16) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
+                            lv_8_tank_had_car.has(17) ? 0 : 1 / (5 - lv_8_tank_had_car.size),
+                        ]);
+                        if (result != null) {
+                            calc(result);
+                        }
+                        return;
+                    }
+                    lv_8_tank += result.name + "(+" + jiangpin_jinbi[position] + "金币),";
+                    jinbi += jiangpin_jinbi[position];
+                    jiangli_jinbi += jiangpin_jinbi[position];
+                    car_lv8_count++;
+                } else {
+                    lv_8_tank += "<font color=red>" + result.name + "</font>,";
+                    lv_8_tank_had_car.add(position);
+                    car_lv8_count++;
+                }
+                // console.log(lv_8_tank_had_car)
+                lv_8_tank.substring(0, lv_8_tank.length - 1);
+                baodi_count = 0;
+            }
+        }
+    </script>
+</body>
+
+</html>
