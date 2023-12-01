@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-200 flex items-center justify-center h-screen">
+    <div class="container mx-auto p-4">
+        <h1 class="text-4xl font-bold mb-4 text-center">Random Number Generator</h1>
+        <div class="flex justify-center items-center mb-4">
+            <input id="min" type="number" class="border p-2 mr-2 rounded" placeholder="Min">
+            <input id="max" type="number" class="border p-2 rounded" placeholder="Max">
+        </div>
+        <div class="flex justify-center items-center mb-4">
+            <button id="generate" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                Generate
+            </button>
+            <button id="reset" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                Reset
+            </button>
+        </div>
+        <div id="result" class="text-center font-bold text-lg"></div>
+    </div>
+<script>
+    var generateButton = document.getElementById('generate');
+    var resetButton = document.getElementById('reset');
+    var minElement = document.getElementById('min');
+    var maxElement = document.getElementById('max');
+    var resultElement = document.getElementById('result');
+
+    generateButton.addEventListener('click', generateRandomNumber);
+    resetButton.addEventListener('click', resetResults);
+
+    function generateRandomNumber() {
+        var min = parseInt(minElement.value);
+        var max = parseInt(maxElement.value);
+
+        if(isNaN(min) || isNaN(max)) {
+            alert('Please enter both a minimum and maximum number');
+            return;
+        }
+
+        var result = Math.floor(Math.random() * (max - min + 1)) + min;
+        var results = resultElement.innerText.split(', ').filter(Boolean);
+        results.push(result);
+        resultElement.innerText = results.join(', ');
+    }
+
+    function resetResults() {
+        resultElement.innerText = '';
+    }
+</script>
+</body>
+</html>
